@@ -1,9 +1,32 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* v4 config lives here — no tailwind.config.js. @source tells the scanner
+   where to look now that there's no `content` array. */
+@source "../index.php";
+
+@theme {
+  --color-bg: #070709;
+  --color-surface: #111113;
+  --color-surface2: #19191b;
+  --color-line: #232326;
+  --color-accent: #b9ff66;
+  --color-accent-hover: #a8e635;
+  --font-sans: Inter, system-ui, -apple-system, sans-serif;
+  --font-display: "Instrument Sans", Inter, sans-serif;
+  --shadow-soft: 0 1px 0 0 rgb(255 255 255 / 4%), 0 8px 24px rgb(0 0 0 / 50%);
+}
 
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 html { scroll-behavior: smooth; }
-::selection { background: #B9FF66; color: #09090B; }
+::selection { background: var(--color-accent); color: var(--color-bg); }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 999px; }
+::-webkit-scrollbar-track { background: var(--color-bg); }
+
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s ease; }
-.reveal.in { opacity: 1; transform: translateY(0); }
+.reveal.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  html { scroll-behavior: auto; }
+}

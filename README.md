@@ -1,75 +1,48 @@
-# GrowwDaddy — Reddit Marketing Agency
+# GrowwDaddy
 
-One-page marketing site for **GrowwDaddy**. Built with PHP + Tailwind CSS (CDN) + minimal vanilla JS. Lightweight, fast, and deployable on any standard PHP host.
+One-page site. PHP for a handful of variables, Tailwind v4 for the styling, ~120 lines of vanilla JS. No framework, no database, no build step on the server.
 
-## Quick start
-
-No build step required — Tailwind is loaded via CDN in `index.php`.
+## Run it
 
 ```bash
-# Local PHP server
 php -S localhost:8000
-# then open http://localhost:8000
 ```
 
-## Deploy
+`assets/output.css` is committed, so the site works on a fresh clone with no npm install.
 
-Upload the contents of this folder to your hosting root. That's it.
+## Editing styles
 
-- `index.php` is the entire site
-- `assets/favicon.svg` is the favicon
-- No database needed
-
-## Edit the CTA
-
-In `index.php` at the top:
-
-```php
-$ctaUrl = "#contact"; // <- replace with Calendly / Cal.com link
-$email = "hello@growwdaddy.com";
-```
-
-All primary buttons use `$ctaUrl`, so one edit updates every CTA.
-
-## Optional: compile Tailwind locally (instead of CDN)
-
-If you prefer a compiled CSS file for production:
+All Tailwind config lives in `src/input.css` (`@theme` for colours/fonts, `@source` for the scanner). There is no `tailwind.config.js` — v4 doesn't need one.
 
 ```bash
 npm install
-npm run build   # creates assets/output.css
+npm run dev     # watch
+npm run build   # minified, commit the result
 ```
 
-Then in `index.php` replace the CDN `<script src="https://cdn.tailwindcss.com">` block with:
+Colour tokens: `bg`, `surface`, `surface2`, `line`, `accent`, `accent-hover`.
 
-```html
-<link rel="stylesheet" href="/assets/output.css">
+## Cache busting
+
+`index.php` appends `?v=<md5 of output.css>` to the stylesheet, so `.htaccess` can cache it for a year and visitors still get the new file the moment it changes. Rebuild the CSS and the hash moves on its own — nothing to remember.
+
+## Things to change before it goes live
+
+- `$ctaUrl` in `index.php` — currently `#contact`, wants the Cal.com / Calendly link
+- `$email` — `hello@growwdaddy.com` needs to exist and be monitored
+- `$siteUrl` — used for the canonical and OG tags, change if the domain isn't `growwdaddy.com`
+- `assets/og-image.png` (1200×630) still carries the old headline, so regenerate it
+- The footer says there's no analytics on the page. If you add any, change that line.
+
+## Files
+
 ```
-
-`tailwind.config.js` and `src/input.css` are already set up.
-
-## Where to add real case studies
-
-Search for `CASE_STUDY_START` in `index.php`. Replace the placeholder metrics in the "Built for Measurable Growth" section with real numbers. The section intentionally ships without fake testimonials or inflated stats.
-
-## Structure
-
+index.php           the whole site
+src/input.css       Tailwind entry + theme
+assets/output.css   compiled, committed
+assets/favicon.svg
+assets/og-image.png
+.htaccess           gzip, cache headers, https + www redirect (Apache only)
+robots.txt
+sitemap.xml
 ```
-/index.php          — single page site
-/assets/favicon.svg — favicon
-/src/input.css      — Tailwind input (optional build)
-/tailwind.config.js — Tailwind config
-/package.json       — optional build tooling
-```
-
-## Checklist before launch
-
-- [ ] Replace `$ctaUrl` with your scheduling link
-- [ ] Verify `hello@growwdaddy.com` or update `$email`
-- [ ] Add real `og-image.png` to `/assets/` (1200×630)
-- [ ] Update Privacy/Terms links in footer if needed
-- [ ] Replace placeholder metrics when you have data
-
-## License
-
-© 2026 GrowwDaddy
