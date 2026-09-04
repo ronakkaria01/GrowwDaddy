@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 #
-# Deploys GrowwDaddy to an FTP host.
+# Deploys GrowwDaddy over ssh with rsync.
 #
 #   cp deploy.env.example deploy.env   # fill in, it is gitignored
-#   ./deploy.sh --dry-run              # see what would happen
+#   ./deploy.sh --dry-run              # rsync -n, changes nothing
 #   ./deploy.sh
 #
-# Only curl is required, which macOS already has. No lftp, no npm globals.
+# Needs rsync and ssh locally, and rsync on the server. Both ship with macOS.
 
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")"
@@ -22,23 +22,24 @@ for arg in "$@"; do
   esac
 done
 
-# assets before index.php: the page derives its ?v= hash from output.css on the
-# server, so the stylesheet has to be in place before the markup referencing it.
-FILES=(
+# index.php goes in a second pass, after everything else. The page derives its
+# ?v= hash from output.css on the server, so the stylesheet must already be
+# there or a visitor mid-deploy gets markup pointing at a file that is missing.
+ASSETS=(
   assets/output.css
   assets/favicon.svg
   assets/og-image.png
   .htaccess
   robots.txt
   sitemap.xml
-  index.php
 )
+ENTRY=index.php
 
 # ---- config -----------------------------------------------------------------
 
 # Values already in the environment win over deploy.env, so a one-off
-# `FTP_NO_VERIFY=1 ./deploy.sh` works without editing the file.
-_VARS="FTP_HOST FTP_USER FTP_PASS FTP_DIR FTP_PORT FTP_INSECURE FTP_NO_VERIFY SITE_URL"
+# `REMOTE_DIR=... ./deploy.sh` works without editing the file.
+_VARS="SSH_HOST SSH_USER SSH_PORT SSH_KEY REMOTE_DIR SITE_URL"
 for _v in $_VARS; do eval "_env_$_v=\${$_v-}"; done
 
 # shellcheck source=/dev/null
@@ -49,36 +50,20 @@ for _v in $_VARS; do
   [[ -n "${_pre:-}" ]] && eval "$_v=\$_pre"
 done
 
-: "${FTP_HOST:?set FTP_HOST in deploy.env}"
-: "${FTP_USER:?set FTP_USER in deploy.env}"
-: "${FTP_PASS:?set FTP_PASS in deploy.env}"
-FTP_DIR="${FTP_DIR:-}"          # relative to the login dir, e.g. public_html
-FTP_PORT="${FTP_PORT:-21}"
-FTP_INSECURE="${FTP_INSECURE:-0}"
-FTP_NO_VERIFY="${FTP_NO_VERIFY:-0}"
+: "${SSH_HOST:?set SSH_HOST in deploy.env (an ~/.ssh/config alias is easiest)}"
+: "${REMOTE_DIR:?set REMOTE_DIR in deploy.env, e.g. domains/growwdaddy.com/public_html}"
+SSH_USER="${SSH_USER:-}"
+SSH_PORT="${SSH_PORT:-}"
+SSH_KEY="${SSH_KEY:-}"
 SITE_URL="${SITE_URL:-}"
 
-# Plain FTP sends the password in clear text. Require TLS unless explicitly
-# overridden, and say so loudly when it is.
-#
-# Three levels, least bad first:
-#   default            TLS on, certificate verified
-#   FTP_NO_VERIFY=1    TLS on, certificate not checked. Use when the host's cert
-#                      does not match the name or IP you have to connect to.
-#                      Still encrypted, but a MITM could impersonate the server.
-#   FTP_INSECURE=1     no TLS at all. Password readable by anyone on the path.
-if [[ "$FTP_INSECURE" == "1" ]]; then
-  echo "!! FTP_INSECURE=1: password and files go over the wire unencrypted."
-  TLS_OPTS=""
-elif [[ "$FTP_NO_VERIFY" == "1" ]]; then
-  echo "!! FTP_NO_VERIFY=1: encrypted, but the server certificate is not verified."
-  TLS_OPTS=$'ssl-reqd\ninsecure'
-else
-  TLS_OPTS="ssl-reqd"
-fi
-
-base="ftp://${FTP_HOST}:${FTP_PORT}/"
-[[ -n "$FTP_DIR" ]] && base="${base}${FTP_DIR%/}/"
+# An ~/.ssh/config alias already carries user, port and key, so these stay
+# empty in that case and ssh resolves them itself.
+ssh_cmd="ssh"
+[[ -n "$SSH_PORT" ]] && ssh_cmd+=" -p $SSH_PORT"
+[[ -n "$SSH_KEY" ]]  && ssh_cmd+=" -i $SSH_KEY"
+target="${SSH_USER:+${SSH_USER}@}${SSH_HOST}"
+remote="${REMOTE_DIR%/}"
 
 # ---- preflight --------------------------------------------------------------
 
@@ -88,66 +73,95 @@ if [[ "$SKIP_BUILD" == "0" ]]; then
 fi
 
 echo "==> checking index.php"
-php -l index.php >/dev/null || { echo "index.php has a syntax error, refusing to deploy" >&2; exit 1; }
+php -l "$ENTRY" >/dev/null || { echo "$ENTRY has a syntax error, refusing to deploy" >&2; exit 1; }
 
 missing=0
-for f in "${FILES[@]}"; do
+for f in "${ASSETS[@]}" "$ENTRY"; do
   [[ -f "$f" ]] || { echo "missing: $f" >&2; missing=1; }
 done
 [[ "$missing" == "0" ]] || exit 1
 
-# Whitespace-tolerant: the assignments in index.php are space-aligned.
 # shellcheck disable=SC2016  # the literal $ctaUrl is the point
-if grep -qE '\$ctaUrl[[:space:]]*=[[:space:]]*"#' index.php; then
+if grep -qE '\$ctaUrl[[:space:]]*=[[:space:]]*"#' "$ENTRY"; then
   echo "!! \$ctaUrl is still #contact, so the buttons scroll instead of booking."
 fi
 
-# ---- upload -----------------------------------------------------------------
-
-# Credentials go to curl on stdin, not argv, so they stay out of ps output.
-escape() { printf '%s' "$1" | sed 's/[\\"]/\\&/g'; }
-cred="$(escape "$FTP_USER"):$(escape "$FTP_PASS")"
-
-put() {
-  local local_path="$1" remote="${base}$1"
-  if [[ "$DRY_RUN" == "1" ]]; then
-    printf '   would put  %-24s -> %s\n' "$local_path" "$remote"
-    return
-  fi
-  printf 'user = "%s"\nurl = "%s"\nupload-file = "%s"\nftp-create-dirs\nfail\nsilent\nshow-error\n%s\n' \
-    "$cred" "$remote" "$local_path" "$TLS_OPTS" | curl -K -
-  printf '   sent  %-24s %6s bytes\n' "$local_path" "$(wc -c <"$local_path" | tr -d ' ')"
-}
-
-echo "==> uploading ${#FILES[@]} files to ${base}"
-for f in "${FILES[@]}"; do put "$f"; done
-
-[[ "$DRY_RUN" == "1" ]] && { echo "==> dry run, nothing was uploaded"; exit 0; }
-
-# ---- verify -----------------------------------------------------------------
-
-if [[ -z "$SITE_URL" ]]; then
-  echo "==> done. Set SITE_URL in deploy.env to have this script verify the deploy."
-  exit 0
-fi
-
-echo "==> verifying ${SITE_URL}"
-html="$(curl -fsS --max-time 20 "$SITE_URL")" || { echo "site did not respond" >&2; exit 1; }
-
-served_hash="$(printf '%s' "$html" | sed -n 's/.*output\.css?v=\([a-f0-9]*\).*/\1/p' | head -1)"
-if command -v md5 >/dev/null; then
-  local_hash="$(md5 -q assets/output.css | cut -c1-10)"
-else
-  local_hash="$(md5sum assets/output.css | cut -c1-10)"
-fi
-
-if [[ "$served_hash" == "$local_hash" ]]; then
-  echo "    css hash matches ($local_hash), the live page is serving this build"
-else
-  echo "!!  css hash mismatch: served '$served_hash', local '$local_hash'" >&2
-  echo "    Either output.css did not upload, or PHP cannot read it (falls back to the year)." >&2
+echo "==> testing ssh to ${target}"
+if ! $ssh_cmd -o BatchMode=yes -o ConnectTimeout=12 "$target" true 2>/tmp/gd_ssh_err; then
+  echo "ssh failed:" >&2; sed 's/^/    /' /tmp/gd_ssh_err >&2
+  echo "    Shared hosting rarely uses port 22. Hostinger is 65002, so either add" >&2
+  echo "    'Port 65002' under 'Host $SSH_HOST' in ~/.ssh/config, or set SSH_PORT." >&2
   exit 1
 fi
 
-printf '%s' "$html" | grep -q '<h1' || { echo "!!  no <h1> in the response, PHP may not be executing" >&2; exit 1; }
+$ssh_cmd "$target" 'command -v rsync >/dev/null' \
+  || { echo "no rsync on the server. Tell me and I will switch this to an sftp batch." >&2; exit 1; }
+
+# ---- upload -----------------------------------------------------------------
+
+# --files-from implies --relative, so assets/output.css lands under assets/.
+# --chmod normalises permissions: PHP must be able to read output.css to hash it.
+# shellcheck disable=SC2054  # the commas belong to rsync's --chmod value
+RSYNC=(rsync -rlptz --chmod=F644,D755 --itemize-changes)
+[[ "$DRY_RUN" == "1" ]] && RSYNC+=(--dry-run)
+
+push() {
+  printf '%s\n' "$@" \
+    | "${RSYNC[@]}" --files-from=- -e "$ssh_cmd" \
+        --rsync-path="mkdir -p '$remote' && rsync" \
+        ./ "${target}:${remote}/"
+}
+
+echo "==> rsync ${#ASSETS[@]} assets to ${target}:${remote}/"
+push "${ASSETS[@]}"
+echo "==> rsync ${ENTRY}"
+push "$ENTRY"
+
+if [[ "$DRY_RUN" == "1" ]]; then
+  echo "==> dry run, nothing was written"
+  exit 0
+fi
+
+# ---- verify -----------------------------------------------------------------
+
+md5_10() {
+  if command -v md5 >/dev/null; then md5 -q "$1" | cut -c1-10
+  else md5sum "$1" | cut -c1-10; fi
+}
+local_hash="$(md5_10 assets/output.css)"
+
+# Checked over ssh rather than HTTP, so DNS, Cloudflare and its cache cannot
+# give a false result. This is the authoritative check that the build landed.
+echo "==> verifying on the server"
+remote_hash="$($ssh_cmd "$target" "md5sum '$remote/assets/output.css' 2>/dev/null | cut -c1-10" || true)"
+if [[ "$remote_hash" != "$local_hash" ]]; then
+  echo "!!  output.css on the server does not match this build" >&2
+  echo "    local $local_hash, server '${remote_hash:-not found}'" >&2
+  exit 1
+fi
+echo "    output.css matches ($local_hash)"
+
+$ssh_cmd "$target" "test -r '$remote/assets/output.css'" \
+  || { echo "!!  output.css is not readable, so PHP cannot hash it" >&2; exit 1; }
+
+# HTTP is advisory: the domain may be proxied elsewhere, or Cloudflare may be
+# serving a cached copy. A mismatch here is a routing or caching issue, not a
+# failed upload, so it warns instead of failing.
+if [[ -n "$SITE_URL" ]]; then
+  echo "==> checking ${SITE_URL}"
+  if html="$(curl -fsS --max-time 20 "$SITE_URL" 2>/dev/null)"; then
+    served="$(printf '%s' "$html" | sed -n 's/.*output\.css?v=\([a-f0-9]*\).*/\1/p' | head -1)"
+    if [[ "$served" == "$local_hash" ]]; then
+      echo "    live page is serving this build"
+    else
+      echo "!!  live page shows '${served:-no stylesheet hash}', expected $local_hash."
+      echo "    The files are correct on the server. Check the domain points at this"
+      echo "    host and purge the Cloudflare cache."
+    fi
+    printf '%s' "$html" | grep -q '<h1' || echo "!!  no <h1> in the response, PHP may not be executing."
+  else
+    echo "!!  ${SITE_URL} did not respond. Files are on the server regardless."
+  fi
+fi
+
 echo "==> deployed"

@@ -10,6 +10,24 @@ php -S localhost:8000
 
 `assets/output.css` is committed, so the site works on a fresh clone with no npm install.
 
+## Deploying
+
+```bash
+cp deploy.env.example deploy.env   # gitignored, set SSH_HOST and REMOTE_DIR
+./deploy.sh --dry-run              # rsync -n, writes nothing
+./deploy.sh
+```
+
+Builds the CSS, runs `php -l`, then rsyncs the seven deploy files over ssh.
+`src/`, `node_modules` and the tooling never go up, because rsync is given an
+explicit file list rather than the directory. Assets go first and `index.php`
+second, so the markup never references a stylesheet that has not landed yet.
+
+Verification is done over ssh, not HTTP, comparing the md5 of `output.css` on
+the server against the local build. Cloudflare sits in front of the domain and
+caches, so an HTTP check can pass or fail for reasons that have nothing to do
+with the upload. `SITE_URL` adds an HTTP check on top, but it only warns.
+
 ## Formatting
 
 ```bash
