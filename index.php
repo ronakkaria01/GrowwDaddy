@@ -64,7 +64,6 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <a href="#" class="flex items-center gap-3">
  <div class="w-8 h-8 rounded-lg bg-white text-zinc-900 flex items-center justify-center font-display font-bold text-sm tracking-tight">GD</div>
  <span class="font-display font-semibold text-lg tracking-tight">GrowwDaddy</span>
- <span class="hidden sm:inline-flex ml-1 px-2 py-0.5 rounded-full bg-zinc-800 border border-line text-xs font-medium tracking-widest uppercase text-zinc-400">Reddit only</span>
  </a>
 
  <nav class="hidden md:flex items-center gap-8">
