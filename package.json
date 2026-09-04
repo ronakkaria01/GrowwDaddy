@@ -5,10 +5,15 @@
   "description": "GrowwDaddy — Reddit marketing agency one-page site",
   "scripts": {
     "dev": "tailwindcss -i ./src/input.css -o ./assets/output.css --watch",
-    "build": "tailwindcss -i ./src/input.css -o ./assets/output.css --minify"
+    "build": "tailwindcss -i ./src/input.css -o ./assets/output.css --minify",
+    "format": "rustywind --write index.php && html-beautify -r index.php && prettier --write .",
+    "lint": "rustywind --check-formatted index.php && prettier --check . && php -l index.php"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
+    "js-beautify": "^2.0.3",
+    "prettier": "^3.9.6",
+    "rustywind": "^0.28.0",
     "tailwindcss": "^4.3.3"
   }
 }

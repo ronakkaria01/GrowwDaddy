@@ -10,6 +10,23 @@ php -S localhost:8000
 
 `assets/output.css` is committed, so the site works on a fresh clone with no npm install.
 
+## Formatting
+
+```bash
+npm run format   # rustywind (class order) + html-beautify (index.php) + prettier (css, md, json)
+npm run lint     # check-only, plus php -l
+```
+
+`index.php` is in `.prettierignore` on purpose. Prettier's PHP plugin reflows the
+inside of `<?php ?>` tags — it split `htmlspecialchars($ctaUrl)` over three lines
+— so the template goes through `html-beautify` with `templating: php` instead,
+which treats PHP tags as opaque. Settings live in `.jsbeautifyrc`.
+
+One quirk: rustywind doesn't read the v4 `@theme`, so custom colour classes
+(`bg-surface`, `text-accent`, `border-line`) sort to the front of the attribute
+rather than into their proper group. Class order has no effect on the cascade,
+so it's cosmetic.
+
 ## Editing styles
 
 All Tailwind config lives in `src/input.css` (`@theme` for colours/fonts, `@source` for the scanner). There is no `tailwind.config.js` — v4 doesn't need one.
