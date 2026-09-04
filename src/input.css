@@ -18,6 +18,10 @@
 
 * { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
 html { scroll-behavior: smooth; }
+
+/* Tailwind's own text-4xl/5xl/6xl defaults are ~1.0-1.1, which clips descenders
+   on the display font. One floor here instead of a leading-* on every heading. */
+h1, h2, h3, blockquote { line-height: 1.25; }
 ::selection { background: var(--color-accent); color: var(--color-bg); }
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-thumb { background: var(--color-line); border-radius: 999px; }

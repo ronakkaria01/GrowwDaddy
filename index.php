@@ -41,6 +41,17 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/output.css?v=<?php echo $cssVer; ?>">
+<script type="application/ld+json"><?php echo json_encode([
+  "@context"    => "https://schema.org",
+  "@type"       => "ProfessionalService",
+  "name"        => "GrowwDaddy",
+  "description" => "Reddit marketing agency. Subreddit research, account management, reputation work and lead campaigns.",
+  "url"         => $siteUrl . "/",
+  "image"       => $siteUrl . "/assets/og-image.png",
+  "email"       => $email,
+  "areaServed"  => "Worldwide",
+  "knowsAbout"  => ["Reddit marketing", "Community marketing", "Online reputation management", "Subreddit strategy"],
+], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?></script>
 <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 </head>
 <body class="bg-bg text-white font-sans antialiased overflow-x-hidden">
@@ -97,96 +108,46 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 <!-- Hero -->
 <section class="relative overflow-hidden">
  <div aria-hidden="true" class="pointer-events-none absolute inset-0">
- <div class="absolute -top-[30%] left-1/2 -translate-x-1/2 w-[900px] h-[600px] bg-[radial-gradient(ellipse_at_center,_rgba(185,255,102,0.06),_transparent_65%)]"></div>
- <div class="absolute inset-0 bg-[linear-gradient(to_bottom,_transparent,_rgba(7,7,9,1)_92%)]"></div>
+ <div class="absolute -top-[40%] left-1/2 -translate-x-1/2 w-[1100px] h-[700px] bg-[radial-gradient(ellipse_at_center,_rgba(185,255,102,0.07),_transparent_65%)]"></div>
+ <div class="absolute inset-0 bg-[linear-gradient(to_bottom,_transparent,_rgba(7,7,9,1)_94%)]"></div>
  <div class="absolute inset-0 opacity-[0.015]" style="background-image:url('data:image/svg+xml,%3Csvg viewBox=\'0 0 256 256\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.9\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')"></div>
  </div>
 
- <div class="relative max-w-[1440px] mx-auto px-6 lg:px-8 pt-14 sm:pt-20 lg:pt-24 pb-16 lg:pb-24">
- <div class="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
- <div class="lg:col-span-7">
+ <div class="relative max-w-[1440px] mx-auto px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-32 pb-20 lg:pb-28">
+ <div class="mx-auto max-w-[860px] text-center">
  <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line">
  <span class="w-2 h-2 rounded-full bg-accent"></span>
- <span class="text-xs font-semibold tracking-[0.14em] uppercase text-zinc-400">A Reddit agency, and nothing else</span>
+ <span class="text-xs font-semibold tracking-[0.14em] uppercase text-zinc-400">Reddit marketing agency</span>
  </div>
 
- <h1 class="font-display font-semibold tracking-[-0.04em] leading-[0.92] text-4xl lg:text-6xl mt-6">
- Your buyers are already<br>
- asking about you
- <span class="relative inline-block"><span class="relative z-10">on Reddit.</span><span aria-hidden="true" class="absolute left-0 right-0 bottom-[0.14em] h-[0.38em] bg-accent -z-0"></span></span>
+ <h1 class="mt-7 font-display font-semibold tracking-[-0.035em] text-[34px] sm:text-5xl lg:text-[64px]">
+ Reddit marketing that reads<br class="hidden sm:block">
+ like a
+ <span class="relative inline-block"><span class="relative z-10">person</span><span aria-hidden="true" class="absolute left-0 right-0 bottom-[0.1em] h-[0.36em] bg-accent -z-0"></span></span>
+ wrote it.
  </h1>
 
- <p class="mt-6 text-base sm:text-lg leading-7 text-zinc-400 max-w-[560px]">
- We find those threads, join them properly, and make sure the answer people read is yours. No copy-paste pitches, no burner accounts, no upvote rings.
+ <p class="mt-6 mx-auto max-w-[620px] text-base sm:text-lg leading-7 text-zinc-400">
+ We get your brand into the subreddits where people are already asking what to buy, then answer them properly. Real accounts, real comments, no copy-paste pitches and no upvote rings.
  </p>
 
- <div class="mt-8 flex flex-col sm:flex-row gap-3">
- <a href="<?php echo htmlspecialchars($ctaUrl); ?>" class="inline-flex items-center justify-center h-[48px] px-7 rounded-full bg-accent text-zinc-900 font-semibold text-sm hover:bg-accent-hover transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
+ <div class="mt-9 flex flex-col sm:flex-row gap-3 sm:justify-center">
+ <a href="<?php echo htmlspecialchars($ctaUrl); ?>" class="inline-flex items-center justify-center h-[50px] px-7 rounded-full bg-accent text-zinc-900 font-semibold text-sm hover:bg-accent-hover transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg">
  Book a strategy call
  <svg class="ml-2" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
  </a>
- <a href="#how-it-works" class="inline-flex items-center justify-center h-[48px] px-7 rounded-full border border-line bg-transparent text-white font-medium text-sm hover:bg-surface transition-colors">
+ <a href="#how-it-works" class="inline-flex items-center justify-center h-[50px] px-7 rounded-full border border-line bg-transparent text-white font-medium text-sm hover:bg-surface transition-colors">
  See how we work
  </a>
  </div>
 
- <div class="mt-8 flex flex-wrap items-center gap-4 text-xs">
- <div class="flex items-center gap-2 text-zinc-400">
+ <div class="mt-9 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-zinc-500">
+ <span class="inline-flex items-center gap-2">
  <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
- If Reddit is wrong for you, we'll say so on the call
- </div>
+ Subreddit research, account management, reputation and lead campaigns
+ </span>
  <span class="hidden sm:block w-px h-3 bg-line"></span>
- <span class="text-zinc-400">We usually reply the same day</span>
- </div>
- </div>
-
- <div class="lg:col-span-5">
- <div class="rounded-[24px] bg-surface border border-line p-6 lg:p-7 lg:ml-2">
- <div class="flex items-start justify-between gap-4">
- <div class="flex items-center gap-2">
- <span class="w-2 h-2 rounded-full bg-accent"></span>
- <span class="text-xs font-semibold tracking-widest uppercase text-zinc-400">How a thread becomes a customer</span>
- </div>
- <span class="text-xs font-medium text-zinc-500 shrink-0">Example, not live data</span>
- </div>
-
- <div class="mt-6 space-y-3">
- <div class="rounded-2xl bg-bg border border-line p-4">
- <div class="flex items-center gap-2">
- <span class="px-2.5 py-0.5 rounded-full bg-accent text-zinc-900 text-xs font-semibold">r/SaaS</span>
- <span class="text-xs text-zinc-500">6h ago</span>
- <span class="ml-auto w-1.5 h-1.5 rounded-full bg-accent"></span>
- </div>
- <p class="mt-3 text-sm font-medium leading-snug text-white">What is everyone using for onboarding emails now?</p>
- <p class="mt-2 text-xs text-zinc-500">31 comments, nobody has named a tool yet</p>
- </div>
-
- <div class="rounded-2xl bg-bg border border-line p-4">
- <div class="flex items-center gap-2">
- <span class="px-2 py-0.5 rounded-full bg-white text-zinc-900 text-xs font-semibold">r/marketing</span>
- <span class="text-xs text-zinc-500">12h ago</span>
- </div>
- <p class="mt-3 text-sm font-medium leading-snug text-white">Has anyone actually made Reddit work for B2B?</p>
- <p class="mt-2 text-xs text-zinc-500">Reading it, probably not worth a reply</p>
- </div>
-
- <div class="rounded-2xl bg-bg border border-line p-4">
- <div class="flex items-center gap-2">
- <span class="px-2 py-0.5 rounded-full bg-zinc-800 text-white text-xs font-semibold border border-line">r/startups</span>
- <span class="text-xs text-zinc-500">1d ago</span>
- <span class="ml-auto text-xs font-medium text-zinc-500">Queued</span>
- </div>
- <p class="mt-3 text-sm font-medium leading-snug text-white">How do you mention your product without getting banned?</p>
- </div>
- </div>
-
- <div class="mt-6 rounded-xl bg-accent text-zinc-900 px-4 py-3">
- <p class="text-sm font-semibold">One useful reply. Then a DM. Then a demo.</p>
- <p class="mt-0.5 text-xs font-medium text-zinc-800">Written by a person who read the whole thread</p>
- </div>
-
- <p class="mt-4 text-xs text-zinc-500">That comment is still on page one of Google eight months later. That is the bit paid ads can't do.</p>
- </div>
+ <span>If Reddit is wrong for you, we'll say so on the call</span>
  </div>
  </div>
  </div>
@@ -197,7 +158,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="max-w-[1440px] mx-auto px-6 lg:px-8 py-20 lg:py-28">
  <div class="max-w-3xl reveal">
  <p class="text-xs font-semibold tracking-[0.14em] uppercase text-accent">Where brands get it wrong</p>
- <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl leading-[1.05]">Reddit doesn't behave like<br><span class="text-zinc-400">the rest of your marketing.</span></h2>
+ <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl">Reddit doesn't behave like<br><span class="text-zinc-400">the rest of your marketing.</span></h2>
  <p class="mt-4 text-base leading-7 text-zinc-400">Post the thing you'd happily put on LinkedIn and it gets downvoted in about four minutes. These communities can smell a campaign, and the moderators delete what feels like one.</p>
  </div>
 
@@ -233,7 +194,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="reveal mt-6 rounded-[20px] bg-accent text-zinc-900 p-6 lg:p-8 flex flex-col lg:flex-row lg:items-center gap-6">
  <div class="flex-1">
  <div class="inline-flex items-center gap-2 text-xs font-bold tracking-widest uppercase"><span class="w-1.5 h-1.5 rounded-full bg-surface"></span> That's our job</div>
- <p class="mt-2 font-display font-semibold text-lg leading-tight tracking-tight">We spend the week inside those communities so your name turns up in the threads worth being in.</p>
+ <p class="mt-2 font-display font-semibold text-lg tracking-tight">We spend the week inside those communities so your name turns up in the threads worth being in.</p>
  <p class="mt-2 text-sm leading-6 text-zinc-800">And stays out of the ones where it would only annoy people.</p>
  </div>
  <a href="#services" class="inline-flex items-center justify-center h-11 px-6 rounded-full bg-zinc-900 text-white font-semibold text-sm shrink-0 hover:bg-zinc-800 transition-colors">See what we do</a>
@@ -247,7 +208,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
  <div class="reveal">
  <p class="text-xs font-semibold tracking-[0.14em] uppercase text-zinc-400">Services</p>
- <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl leading-[1]">What we actually do</h2>
+ <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl">What we actually do</h2>
  </div>
  <p class="reveal max-w-[520px] text-sm leading-6 text-zinc-400">Four things. We don't run paid ads, we don't touch TikTok, and we're not going to pretend otherwise on a discovery call.</p>
  </div>
@@ -297,7 +258,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="max-w-[1440px] mx-auto px-6 lg:px-8 py-20 lg:py-28">
  <div class="reveal max-w-2xl">
  <p class="text-xs font-semibold tracking-[0.14em] uppercase text-accent">Process</p>
- <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl leading-[1.05]">The same four steps, every client</h2>
+ <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl">The same four steps, every client</h2>
  <p class="mt-3 text-sm leading-6 text-zinc-400">The research changes completely from one client to the next. The order never does.</p>
  </div>
 
@@ -355,7 +316,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="grid lg:grid-cols-12 gap-10 lg:gap-12 items-start">
  <div class="lg:col-span-5 reveal">
  <p class="text-xs font-semibold tracking-[0.14em] uppercase text-zinc-400">Why Reddit</p>
- <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl leading-[1.05]">Why we only work on this one channel</h2>
+ <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl">Why we only work on this one channel</h2>
  <p class="mt-4 text-sm leading-7 text-zinc-400">
  Reddit is where people go once they've stopped believing the ads. They look for the comparison, the alternative, the "is it worth it" thread, and they read those comments far more carefully than they'll ever read your homepage.
  </p>
@@ -418,7 +379,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="grid lg:grid-cols-12 gap-0">
  <div class="lg:col-span-7 p-8 lg:p-10 xl:p-12">
  <p class="text-xs font-semibold tracking-[0.14em] uppercase text-accent">Why us</p>
- <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl leading-[1.05]">We've been on Reddit long<br>enough to know what gets deleted.</h2>
+ <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl">We've been on Reddit long<br>enough to know what gets deleted.</h2>
  <p class="mt-4 text-sm leading-7 text-zinc-400">We've had posts pulled, comments buried at the bottom of threads, and one account shadowbanned in our first month. Most of what we know came out of those, not out of a course.</p>
 
  <div class="mt-8 space-y-4">
@@ -463,7 +424,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="lg:col-span-5 bg-surface border-t lg:border-t-0 lg:border-l border-line p-8 lg:p-10 xl:p-12 flex flex-col">
  <div class="rounded-[20px] bg-accent text-zinc-900 p-7">
  <div class="text-xs font-bold tracking-widest uppercase">The rule we work to</div>
- <p class="mt-3 font-display font-semibold text-lg leading-[1.3] tracking-tight">
+ <p class="mt-3 font-display font-semibold text-lg tracking-tight">
  Nobody needs to see your brand everywhere. They need to see it once, in the thread they were already reading.
  </p>
  <p class="mt-4 text-sm leading-6 text-zinc-800">It's on the first page of every brief we write.</p>
@@ -495,7 +456,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="grid lg:grid-cols-12 gap-10">
  <div class="lg:col-span-4">
  <p class="text-xs font-semibold tracking-[0.14em] uppercase text-accent">FAQ</p>
- <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl leading-[1.05]">The questions<br><span class="text-zinc-400">we get every week</span></h2>
+ <h2 class="mt-3 font-display font-semibold tracking-[-0.02em] text-4xl">The questions<br><span class="text-zinc-400">we get every week</span></h2>
  <p class="mt-4 text-sm leading-6 text-zinc-400">If Reddit is a bad fit for what you sell, we'd rather tell you on the first call than three months in.</p>
  <div class="mt-6 inline-flex flex-wrap items-center gap-2 text-xs text-zinc-400">
  <span class="w-2 h-2 rounded-full bg-accent"></span>
@@ -591,7 +552,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="relative grid lg:grid-cols-12 gap-8 p-8 lg:p-12 xl:p-14 items-center">
  <div class="lg:col-span-7">
  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-accent text-zinc-900 text-xs font-bold tracking-widest uppercase">Thirty minutes, no charge</div>
- <h2 class="mt-4 font-display font-semibold tracking-[-0.02em] text-4xl leading-[1.05]">Find out whether Reddit<br>is worth your time.</h2>
+ <h2 class="mt-4 font-display font-semibold tracking-[-0.02em] text-4xl">Find out whether Reddit<br>is worth your time.</h2>
  <p class="mt-4 text-base leading-7 text-zinc-400 max-w-[520px]">Half an hour, no slide deck. We'll go through your niche, name the subreddits worth being in, and tell you if there aren't any.</p>
 
  <div class="mt-8 flex flex-col sm:flex-row gap-3">
