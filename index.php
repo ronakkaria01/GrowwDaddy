@@ -664,42 +664,9 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
   <!-- Footer -->
   <footer class="border-line bg-bg border-t">
-    <div class="mx-auto max-w-[1440px] px-6 py-12 lg:px-8">
-      <div class="grid gap-10 lg:grid-cols-12">
-        <div class="lg:col-span-6">
-          <a href="#" class="flex items-center gap-3">
-            <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white font-display text-sm font-bold text-zinc-900">GD</div>
-            <span class="font-display text-lg font-semibold tracking-tight">GrowwDaddy</span>
-          </a>
-          <p class="mt-3 max-w-[380px] text-sm leading-6 text-zinc-400">A small team that only does Reddit. We work remotely, mostly with B2B and DTC brands who are tired of paying more for the same clicks.</p>
-          <div class="mt-5 flex flex-wrap items-center gap-3">
-            <a href="mailto:<?php echo htmlspecialchars($email); ?>" class="text-sm font-medium text-zinc-400 underline decoration-zinc-600 underline-offset-4 hover:text-white"><?php echo htmlspecialchars($email); ?></a>
-            <span class="h-1 w-1 rounded-full bg-zinc-600"></span>
-            <span class="text-xs text-zinc-500">Remote, UK hours</span>
-          </div>
-        </div>
-
-        <div class="gap-16 lg:col-span-6 lg:flex lg:justify-end">
-          <div>
-            <div class="text-xs font-semibold tracking-widest text-zinc-500 uppercase">This page</div>
-            <nav class="mt-4 flex flex-col gap-2.5">
-              <a href="#services" class="text-sm text-zinc-400 transition-colors hover:text-white">Services</a>
-              <a href="#how-it-works" class="text-sm text-zinc-400 transition-colors hover:text-white">Process</a>
-              <a href="#why-reddit" class="text-sm text-zinc-400 transition-colors hover:text-white">Why Reddit</a>
-              <a href="#faq" class="text-sm text-zinc-400 transition-colors hover:text-white">FAQ</a>
-            </nav>
-          </div>
-          <div class="mt-8 lg:mt-0">
-            <div class="text-xs font-semibold tracking-widest text-zinc-500 uppercase">Privacy</div>
-            <p class="mt-4 max-w-[240px] text-sm leading-6 text-zinc-400">No cookies, no analytics and no tracking pixels on this page. Email us and we keep the email. That's the whole policy.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="border-line mt-10 flex flex-col items-center justify-between gap-3 border-t pt-6 sm:flex-row">
-        <p class="text-xs text-zinc-500">&copy; <?php echo $year; ?> GrowwDaddy</p>
-        <p class="text-xs text-zinc-500">No stock photos, no borrowed case studies, no made-up numbers.</p>
-      </div>
+    <div class="mx-auto flex max-w-[1440px] flex-col items-center justify-between gap-3 px-6 py-8 sm:flex-row lg:px-8">
+      <p class="text-xs text-zinc-500">&copy; <?php echo $year; ?> GrowwDaddy</p>
+      <a href="mailto:<?php echo htmlspecialchars($email); ?>" class="text-xs font-medium text-zinc-400 underline decoration-zinc-600 underline-offset-4 hover:text-white"><?php echo htmlspecialchars($email); ?></a>
     </div>
   </footer>
 
