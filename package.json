@@ -1,0 +1,13 @@
+{
+  "name": "growwdaddy",
+  "private": true,
+  "version": "1.0.0",
+  "description": "GrowwDaddy — Reddit marketing agency one-page site",
+  "scripts": {
+    "dev": "tailwindcss -i ./src/input.css -o ./assets/output.css --watch",
+    "build": "tailwindcss -i ./src/input.css -o ./assets/output.css --minify"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  }
+}
