@@ -115,15 +115,10 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="relative max-w-[1440px] mx-auto px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-32 pb-20 lg:pb-28">
  <div class="mx-auto max-w-[860px] text-center">
- <div class="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-full bg-surface border border-line">
- <span class="w-2 h-2 rounded-full bg-accent"></span>
- <span class="text-xs font-semibold tracking-[0.14em] uppercase text-zinc-400">Reddit marketing agency</span>
- </div>
-
- <h1 class="mt-7 font-display font-semibold tracking-[-0.035em] text-[34px] sm:text-5xl lg:text-[64px]">
+ <h1 class="font-display font-semibold tracking-[-0.035em] text-[34px] sm:text-5xl lg:text-[64px]">
  Reddit marketing that reads<br class="hidden sm:block">
  like a
- <span class="relative inline-block"><span class="relative z-10">person</span><span aria-hidden="true" class="absolute left-0 right-0 bottom-[0.1em] h-[0.36em] bg-accent -z-0"></span></span>
+ <span class="inline-block -rotate-2 rounded-xl bg-accent px-3 py-0.5 text-zinc-900">person</span>
  wrote it.
  </h1>
 
