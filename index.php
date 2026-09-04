@@ -159,7 +159,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="mt-10 grid md:grid-cols-3 gap-5 lg:gap-6">
  <div class="reveal rounded-[20px] bg-bg border border-line p-6 lg:p-7">
  <div class="w-9 h-9 rounded-xl bg-zinc-800 border border-line flex items-center justify-center text-zinc-400">
- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
  </div>
  <h3 class="mt-5 font-semibold text-base">People spot a pitch instantly</h3>
  <p class="mt-2 text-sm leading-6 text-zinc-400">A comment that reads like your landing page does more damage than saying nothing at all. And once a subreddit has decided you're a marketer, that follows the username around.</p>
@@ -168,7 +168,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal rounded-[20px] bg-bg border border-line p-6 lg:p-7" style="transition-delay: 80ms">
  <div class="w-9 h-9 rounded-xl bg-zinc-800 border border-line flex items-center justify-center text-zinc-400">
- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
  </div>
  <h3 class="mt-5 font-semibold text-base">Every subreddit is its own room</h3>
  <p class="mt-2 text-sm leading-6 text-zinc-400">r/SaaS will forgive a plug if the post is genuinely useful. r/smallbusiness will not. Same words, two completely different outcomes.</p>
@@ -177,7 +177,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal rounded-[20px] bg-bg border border-line p-6 lg:p-7" style="transition-delay: 160ms">
  <div class="w-9 h-9 rounded-xl bg-zinc-800 border border-line flex items-center justify-center text-zinc-400">
- <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+ <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M17.5 8.5l4 4M21.5 8.5l-4 4"/></svg>
  </div>
  <h3 class="mt-5 font-semibold text-base">Nobody buys from a stranger</h3>
  <p class="mt-2 text-sm leading-6 text-zinc-400">You need a comment history before anyone cares what you sell. That's weeks of showing up, which is why a two-week campaign sprint gets you nowhere.</p>
@@ -210,7 +210,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="mt-10 grid md:grid-cols-2 gap-5 lg:gap-6">
  <div class="reveal group rounded-[20px] bg-surface border border-line p-7 lg:p-8 hover:border-zinc-700 hover:bg-surface2 transition-colors">
  <div class="w-10 h-10 rounded-xl bg-accent flex items-center justify-center text-zinc-900">
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><circle cx="8.5" cy="10" r="2.2"/><path d="M5 16.5c0-1.9 1.6-3.2 3.5-3.2s3.5 1.3 3.5 3.2"/><path d="M15 9.5h4M15 13.5h4"/></svg>
  </div>
  <h3 class="mt-6 font-semibold text-lg tracking-tight">Account management</h3>
  <p class="mt-2 text-sm leading-6 text-zinc-400">Profiles with a real comment history behind them, built up over months. Karma that came from being useful in threads, not from reposting other people's photos.</p>
@@ -219,7 +219,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal group rounded-[20px] bg-surface border border-line p-7 lg:p-8 hover:border-zinc-700 hover:bg-surface2 transition-colors" style="transition-delay:60ms">
  <div class="w-10 h-10 rounded-xl bg-zinc-900 text-white flex items-center justify-center border border-line">
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20.5 20.5L16 16"/></svg>
  </div>
  <h3 class="mt-6 font-semibold text-lg tracking-tight">Community research and engagement</h3>
  <p class="mt-2 text-sm leading-6 text-zinc-400">We work out which subreddits your buyers actually sit in, read the rules properly, then get into the conversations that are already happening there.</p>
@@ -228,7 +228,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal group rounded-[20px] bg-surface border border-line p-7 lg:p-8 hover:border-zinc-700 hover:bg-surface2 transition-colors" style="transition-delay:120ms">
  <div class="w-10 h-10 rounded-xl bg-zinc-800 border border-line flex items-center justify-center text-white">
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.9 7.9"/></svg>
  </div>
  <h3 class="mt-6 font-semibold text-lg tracking-tight">Reputation and mentions</h3>
  <p class="mt-2 text-sm leading-6 text-zinc-400">Every few weeks somebody asks whether your product is any good. We watch for it, make sure there's a fair answer in the thread, and deal with the old posts that keep coming up in search.</p>
@@ -237,7 +237,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal rounded-[20px] bg-accent text-zinc-900 p-7 lg:p-8 lg:ml-2" style="transition-delay:180ms">
  <div class="w-10 h-10 rounded-xl bg-surface text-white flex items-center justify-center">
- <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+ <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
  </div>
  <h3 class="mt-6 font-semibold text-lg tracking-tight">Lead campaigns</h3>
  <p class="mt-2 text-sm leading-6 text-zinc-800">Posts and comments that send people to your site, then carry on sending them, because a good Reddit answer still ranks a year after it was written.</p>
@@ -326,7 +326,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
  <div class="grid sm:grid-cols-2 gap-4">
  <div class="reveal rounded-[20px] bg-surface border border-line p-6">
  <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-zinc-700 flex items-center justify-center text-accent">
- <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.7"/></svg>
  </div>
  <h3 class="mt-4 font-semibold text-sm">People ask right before they buy</h3>
  <p class="mt-1.5 text-sm leading-6 text-zinc-400">"Which one should I go with" threads are full of people with a card already in their hand.</p>
@@ -334,7 +334,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal rounded-[20px] bg-surface border border-line p-6" style="transition-delay:60ms">
  <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-line flex items-center justify-center text-zinc-400">
- <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.4"/></svg>
  </div>
  <h3 class="mt-4 font-semibold text-sm">The niches get absurdly specific</h3>
  <p class="mt-1.5 text-sm leading-6 text-zinc-400">There's a subreddit for commercial espresso machines. There's almost certainly one for whatever you sell.</p>
@@ -342,7 +342,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal rounded-[20px] bg-surface border border-line p-6" style="transition-delay:120ms">
  <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-line flex items-center justify-center text-zinc-400">
- <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20V5"/><path d="M5.5 11.5L12 5l6.5 6.5"/></svg>
  </div>
  <h3 class="mt-4 font-semibold text-sm">A comment beats a banner</h3>
  <p class="mt-1.5 text-sm leading-6 text-zinc-400">One believable reply from somebody who has actually used the thing is worth a month of impressions.</p>
@@ -350,7 +350,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
 
  <div class="reveal rounded-[20px] bg-surface border border-line p-6" style="transition-delay:180ms">
  <div class="w-8 h-8 rounded-lg bg-zinc-800 border border-line flex items-center justify-center text-zinc-400">
- <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+ <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3 4v4h4"/><path d="M12 8v4.5l3 1.8"/></svg>
  </div>
  <h3 class="mt-4 font-semibold text-sm">Old threads keep working</h3>
  <p class="mt-1.5 text-sm leading-6 text-zinc-400">Reddit ranks well in Google and stays there. A good answer from last year is still bringing people in.</p>
