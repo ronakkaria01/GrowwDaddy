@@ -36,8 +36,18 @@ FILES=(
 
 # ---- config -----------------------------------------------------------------
 
+# Values already in the environment win over deploy.env, so a one-off
+# `FTP_NO_VERIFY=1 ./deploy.sh` works without editing the file.
+_VARS="FTP_HOST FTP_USER FTP_PASS FTP_DIR FTP_PORT FTP_INSECURE FTP_NO_VERIFY SITE_URL"
+for _v in $_VARS; do eval "_env_$_v=\${$_v-}"; done
+
 # shellcheck source=/dev/null
 [[ -f deploy.env ]] && { set -a; . ./deploy.env; set +a; }
+
+for _v in $_VARS; do
+  eval "_pre=\$_env_$_v"
+  [[ -n "${_pre:-}" ]] && eval "$_v=\$_pre"
+done
 
 : "${FTP_HOST:?set FTP_HOST in deploy.env}"
 : "${FTP_USER:?set FTP_USER in deploy.env}"
@@ -45,15 +55,26 @@ FILES=(
 FTP_DIR="${FTP_DIR:-}"          # relative to the login dir, e.g. public_html
 FTP_PORT="${FTP_PORT:-21}"
 FTP_INSECURE="${FTP_INSECURE:-0}"
+FTP_NO_VERIFY="${FTP_NO_VERIFY:-0}"
 SITE_URL="${SITE_URL:-}"
 
 # Plain FTP sends the password in clear text. Require TLS unless explicitly
 # overridden, and say so loudly when it is.
+#
+# Three levels, least bad first:
+#   default            TLS on, certificate verified
+#   FTP_NO_VERIFY=1    TLS on, certificate not checked. Use when the host's cert
+#                      does not match the name or IP you have to connect to.
+#                      Still encrypted, but a MITM could impersonate the server.
+#   FTP_INSECURE=1     no TLS at all. Password readable by anyone on the path.
 if [[ "$FTP_INSECURE" == "1" ]]; then
   echo "!! FTP_INSECURE=1: password and files go over the wire unencrypted."
-  TLS_OPT=""
+  TLS_OPTS=""
+elif [[ "$FTP_NO_VERIFY" == "1" ]]; then
+  echo "!! FTP_NO_VERIFY=1: encrypted, but the server certificate is not verified."
+  TLS_OPTS=$'ssl-reqd\ninsecure'
 else
-  TLS_OPT="ssl-reqd"
+  TLS_OPTS="ssl-reqd"
 fi
 
 base="ftp://${FTP_HOST}:${FTP_PORT}/"
@@ -94,7 +115,7 @@ put() {
     return
   fi
   printf 'user = "%s"\nurl = "%s"\nupload-file = "%s"\nftp-create-dirs\nfail\nsilent\nshow-error\n%s\n' \
-    "$cred" "$remote" "$local_path" "$TLS_OPT" | curl -K -
+    "$cred" "$remote" "$local_path" "$TLS_OPTS" | curl -K -
   printf '   sent  %-24s %6s bytes\n' "$local_path" "$(wc -c <"$local_path" | tr -d ' ')"
 }
 
