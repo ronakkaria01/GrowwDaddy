@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "tailwindcss -i ./src/input.css -o ./assets/output.css --watch",
     "build": "tailwindcss -i ./src/input.css -o ./assets/output.css --minify",
+    "og": "'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' --headless --disable-gpu --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 --screenshot=assets/og-image.png src/og-image.html",
     "format": "rustywind --write index.php && html-beautify -r index.php && prettier --write .",
     "lint": "rustywind --check-formatted index.php && prettier --check . && php -l index.php"
   },

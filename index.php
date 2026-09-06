@@ -9,6 +9,122 @@ $year    = date("Y");
 // works on every host. Move to output.<hash>.css only if a CDN ignores query strings.
 $css    = __DIR__ . "/assets/output.css";
 $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
+
+// ---- Contact form ----------------------------------------------------------
+// Sent with PHPMailer over Hostinger SMTP. Credentials live in smtp.php, which
+// is gitignored and pushed by deploy.sh. Its shape is in the README.
+$smtpFile = __DIR__ . "/smtp.php";
+$smtp     = is_file($smtpFile) ? require $smtpFile : null;
+
+$budgets = ["Under £1k/mo", "£1k–3k/mo", "£3k–6k/mo", "£6k+/mo", "Not sure yet"];
+$form    = ["name" => "", "email" => "", "company" => "", "budget" => "", "message" => ""];
+$errors  = [];
+$sent    = isset($_GET["sent"]);
+// The form still works without JS: same handler, one branch at the end.
+$wantsJson = ($_SERVER["HTTP_X_REQUESTED_WITH"] ?? "") === "fetch";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+  foreach ($form as $k => $_v) {
+    $form[$k] = trim((string) ($_POST[$k] ?? ""));
+  }
+
+  if ($form["name"] === "") {
+    $errors["name"] = "Tell us your name.";
+  }
+  if (!filter_var($form["email"], FILTER_VALIDATE_EMAIL)) {
+    $errors["email"] = "That email address doesn't look right.";
+  }
+  if (mb_strlen($form["message"]) < 10) {
+    $errors["message"] = "A sentence or two on what you sell.";
+  }
+  if (!in_array($form["budget"], $budgets, true)) {
+    $form["budget"] = ""; // anything not on the list is dropped, not argued with
+  }
+
+  // ponytail: honeypot, not a captcha. Add hCaptcha if real spam gets through.
+  $isBot = trim((string) ($_POST["website"] ?? "")) !== "";
+
+  if (!$errors || $isBot) {
+    $subject = "GrowwDaddy enquiry — " . preg_replace('/\s+/', " ", $form["name"]);
+    $rows    = [
+      "Name"    => $form["name"],
+      "Email"   => $form["email"],
+      "Company" => $form["company"] !== "" ? $form["company"] : "-",
+      "Budget"  => $form["budget"] !== "" ? $form["budget"] : "-",
+    ];
+    $body = "";
+    foreach ($rows as $label => $value) {
+      $body .= "{$label}: {$value}\n";
+    }
+    $body .= "\n{$form["message"]}\n";
+
+    $ok = false;
+    if ($isBot) {
+      $ok = true; // dropped silently, but told the same story as a real one
+    } elseif ($smtp && ($smtp["password"] ?? "") !== "") {
+      require_once __DIR__ . "/vendor/autoload.php";
+      $mailer = new PHPMailer\PHPMailer\PHPMailer(true);
+      try {
+        $mailer->isSMTP();
+        $mailer->Host       = $smtp["host"];
+        $mailer->Port       = (int) $smtp["port"];
+        $mailer->SMTPAuth   = true;
+        $mailer->Username   = $smtp["username"];
+        $mailer->Password   = $smtp["password"];
+        $mailer->SMTPSecure = $smtp["encryption"]; // "ssl" (465) or "tls" (587)
+        $mailer->Timeout    = 15;
+        $mailer->CharSet    = "UTF-8";
+
+        // From must be a mailbox on the domain or Hostinger rejects the
+        // message; the enquirer goes on Reply-To so hitting reply works.
+        $mailer->setFrom($smtp["from"], $smtp["from_name"]);
+        foreach ($smtp["to"] as $recipient) {
+          $mailer->addAddress($recipient);
+        }
+        $mailer->addReplyTo($form["email"], $form["name"]);
+        $mailer->Subject = $subject;
+        $mailer->Body    = $body;
+        $ok              = $mailer->send();
+      } catch (Throwable $e) {
+        // The visitor gets the mailto fallback below; the detail goes to
+        // the PHP error log, never to the page.
+        error_log("GrowwDaddy contact form: " . $mailer->ErrorInfo);
+      }
+    } else {
+      // ponytail: no smtp.php yet, so fall back to mail() rather than
+      // losing the enquiry. Fill in smtp.php and this branch stops running.
+      $ok = @mail($email, $subject, $body, implode("\r\n", [
+        "From: GrowwDaddy site <no-reply@" . parse_url($siteUrl, PHP_URL_HOST) . ">",
+        "Reply-To: {$form["email"]}", // FILTER_VALIDATE_EMAIL rejects newlines
+        "Content-Type: text/plain; charset=UTF-8",
+      ]));
+    }
+
+    if ($ok) {
+      if ($wantsJson) {
+        header("Content-Type: application/json");
+        echo json_encode(["ok" => true]);
+        exit();
+      }
+      // Redirect so a refresh doesn't send the message twice.
+      header("Location: ?sent=1#contact", true, 303);
+      exit();
+    }
+    $errors["form"] = "The message didn't send — that one's on us. Email {$email} and we'll pick it up there.";
+  }
+
+  // Validation errors land here too, since the send block above is skipped.
+  if ($wantsJson) {
+    header("Content-Type: application/json", true, 422);
+    echo json_encode(["ok" => false, "errors" => $errors]);
+    exit();
+  }
+}
+
+// One string for both the server-rendered alert and the one JS builds.
+$alert = $errors
+  ? ($errors["form"] ?? "Nearly — " . count($errors) . " field" . (count($errors) > 1 ? "s need" : " needs") . " a look below.")
+  : "";
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -28,31 +144,33 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
   <meta property="og:image" content="<?php echo $siteUrl; ?>/assets/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="GrowwDaddy — we get you into the Reddit threads where buyers already ask what to buy.">
   <meta property="og:site_name" content="GrowwDaddy">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Reddit marketing agency | GrowwDaddy">
   <meta name="twitter:description" content="A small team that only does Reddit.">
   <meta name="twitter:image" content="<?php echo $siteUrl; ?>/assets/og-image.png">
+  <meta name="twitter:image:alt" content="GrowwDaddy — Reddit marketing agency">
 
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@14,800&family=Instrument+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/output.css?v=<?php echo $cssVer; ?>">
   <script type="application/ld+json">
     <?php echo json_encode([
-  "@context"    => "https://schema.org",
-  "@type"       => "ProfessionalService",
-  "name"        => "GrowwDaddy",
-  "description" => "Reddit marketing agency. Subreddit research, account management, reputation work and lead campaigns.",
-  "url"         => $siteUrl . "/",
-  "image"       => $siteUrl . "/assets/og-image.png",
-  "email"       => $email,
-  "areaServed"  => "Worldwide",
-  "knowsAbout"  => ["Reddit marketing", "Community marketing", "Online reputation management", "Subreddit strategy"],
-], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
+      "@context"    => "https://schema.org",
+      "@type"       => "ProfessionalService",
+      "name"        => "GrowwDaddy",
+      "description" => "Reddit marketing agency. Subreddit research, account management, reputation work and lead campaigns.",
+      "url"         => $siteUrl . "/",
+      "image"       => $siteUrl . "/assets/og-image.png",
+      "email"       => $email,
+      "areaServed"  => "Worldwide",
+      "knowsAbout"  => ["Reddit marketing", "Community marketing", "Online reputation management", "Subreddit strategy"],
+    ], JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT); ?>
 
   </script>
   <noscript>
@@ -72,9 +190,10 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
   <header id="navbar" class="border-line bg-bg sticky top-0 z-50 border-b">
     <div class="mx-auto max-w-[1440px] px-6 lg:px-8">
       <div class="flex h-[64px] items-center justify-between">
-        <a href="#" class="flex items-center gap-3">
-          <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-white font-display text-sm font-bold tracking-tight text-zinc-900">GD</div>
-          <span class="font-display text-lg font-semibold tracking-tight">GrowwDaddy</span>
+        <a href="#" class="group inline-flex items-baseline gap-0" aria-label="GrowwDaddy, home">
+          <span class="font-logo text-[21px] leading-none font-extrabold tracking-[-0.04em] text-white">Groww</span>
+          <span class="text-accent font-logo text-[21px] leading-none font-extrabold tracking-[-0.04em]">Daddy</span>
+          <span aria-hidden="true" class="bg-accent ml-1 h-[5px] w-[5px] rounded-full transition-transform group-hover:scale-125"></span>
         </a>
 
         <nav class="hidden items-center gap-8 md:flex">
@@ -510,7 +629,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
     <section id="faq" class="border-line border-t">
       <div class="mx-auto max-w-[1440px] px-6 py-20 lg:px-8 lg:py-28">
         <div class="grid gap-10 lg:grid-cols-12">
-          <div class="lg:col-span-4">
+          <div class="lg:col-span-6">
             <p class="text-accent text-xs font-semibold tracking-[0.14em] uppercase">FAQ</p>
             <h2 class="mt-3 font-display text-4xl font-semibold tracking-[-0.02em]">The questions<br><span class="text-zinc-400">we get every week</span></h2>
             <p class="mt-4 text-sm leading-6 text-zinc-400">If Reddit is a bad fit for what you sell, we'd rather tell you on the first call than three months in.</p>
@@ -521,7 +640,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
             </div>
           </div>
 
-          <div class="lg:col-span-8">
+          <div class="lg:col-span-6">
             <div class="bg-surface border-line divide-line divide-y overflow-hidden rounded-[20px] border">
               <div class="faq-item">
                 <button class="faq-btn group flex w-full items-center justify-between gap-6 px-6 py-6 text-left lg:px-8" aria-expanded="true">
@@ -582,7 +701,7 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
                 </button>
                 <div class="faq-panel hidden px-6 pb-6 lg:px-8">
                   <p class="max-w-[640px] text-sm leading-7 text-zinc-400">
-                    No, and I'd be careful with anyone who does. A moderator can remove our best thread on a Tuesday afternoon and there's no appeal. What you get instead is the work itself: the research, a plan you approved, and a note every week listing what we posted, where, and what it did.
+                    No, and we'd be careful with anyone who does. A moderator can remove our best thread on a Tuesday afternoon and there's no appeal. What you get instead is the work itself: the research, a plan you approved, and a note every week listing what we posted, where, and what it did.
                   </p>
                 </div>
               </div>
@@ -615,49 +734,113 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
           <div aria-hidden="true" class="pointer-events-none absolute -top-24 -right-24 h-[520px] w-[520px] bg-[radial-gradient(ellipse_at_center,_rgba(185,255,102,0.08),_transparent_60%)]"></div>
           <div aria-hidden="true" class="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,_rgba(255,255,255,0.02),_transparent_40%)]"></div>
 
-          <div class="relative grid items-center gap-8 p-8 lg:grid-cols-12 lg:p-12 xl:p-14">
-            <div class="lg:col-span-7">
-              <div class="bg-accent inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold tracking-widest text-zinc-900 uppercase">Thirty minutes, no charge</div>
-              <h2 class="mt-4 font-display text-4xl font-semibold tracking-[-0.02em]">Find out whether Reddit<br>is worth your time.</h2>
+          <div class="relative grid gap-10 p-8 lg:grid-cols-12 lg:gap-12 lg:p-12 xl:p-14">
+            <div class="lg:col-span-6">
+              <h2 class="font-display text-4xl font-semibold tracking-[-0.02em]">Find out whether Reddit<br>is worth your time.</h2>
               <p class="mt-4 max-w-[520px] text-base leading-7 text-zinc-400">Half an hour, no slide deck. We'll go through your niche, name the subreddits worth being in, and tell you if there aren't any.</p>
 
-              <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-                <a href="<?php echo htmlspecialchars($ctaUrl); ?>" class="bg-accent hover:bg-accent-hover focus-visible:ring-accent focus-visible:ring-offset-bg inline-flex h-[48px] items-center justify-center rounded-full px-7 text-sm font-semibold text-zinc-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
-                  Book the call
-                  <svg class="ml-2" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                    <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                  </svg>
-                </a>
-                <a href="mailto:<?php echo htmlspecialchars($email); ?>" class="border-line inline-flex h-[48px] items-center justify-center rounded-full border bg-zinc-800 px-7 text-sm font-medium text-white transition-colors hover:bg-zinc-700">
-                  <?php echo htmlspecialchars($email); ?>
-                </a>
-              </div>
+              <div class="mt-8 text-sm font-semibold">What you leave the call with</div>
+              <ul class="mt-4 space-y-3">
+                <li class="flex gap-3 text-sm leading-6 text-zinc-400"><span class="bg-accent mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-zinc-900"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                      <path d="M5 12l5 5l10 -10" />
+                    </svg></span> Whether your buyers are on Reddit at all, and how busy those threads are</li>
+                <li class="flex gap-3 text-sm leading-6 text-zinc-400"><span class="border-line mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-zinc-900 text-white"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                      <path d="M5 12l5 5l10 -10" />
+                    </svg></span> The angle we'd take in each one, and what would get us removed</li>
+                <li class="flex gap-3 text-sm leading-6 text-zinc-400"><span class="border-line mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-zinc-800 text-white"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                      <path d="M5 12l5 5l10 -10" />
+                    </svg></span> A straight answer on whether to bother at all</li>
+              </ul>
 
-              <p class="mt-6 text-xs text-zinc-500">Or email us the name of one competitor and we'll send back the three threads they're losing.</p>
+              <p class="mt-6 text-xs text-zinc-500">Or email us at <a href="mailto:<?php echo htmlspecialchars($email); ?>" class="text-zinc-300 underline decoration-zinc-600 underline-offset-4 hover:text-white"><?php echo htmlspecialchars($email); ?></a> with the name of one competitor and we'll send back the three threads they're losing.</p>
             </div>
 
-            <div class="lg:col-span-5">
-              <div class="bg-surface border-line rounded-[20px] border p-6">
-                <div class="text-sm font-semibold">What you leave the call with</div>
-                <ul class="mt-4 space-y-3">
-                  <li class="flex gap-3 text-sm leading-6 text-zinc-400"><span class="bg-accent mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-zinc-900"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <?php // ponytail: one copy of the thank-you, echoed server-side and cloned by the ajax handler.
+            $sentCard = <<<HTML
+            <div class="py-8 text-center">
+                              <div class="bg-accent mx-auto flex h-12 w-12 items-center justify-center rounded-full text-zinc-900"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                                  <path d="M5 12l5 5l10 -10" />
+                                </svg></div>
+                              <div class="mt-5 font-display text-2xl font-semibold text-white">Got it — thanks.</div>
+                              <p class="mx-auto mt-3 max-w-[360px] text-sm leading-6 text-zinc-400">We read every one of these ourselves. You'll hear back within one working day, from the person who'd actually run the account.</p>
+                              <a href="/" class="border-line mt-7 inline-flex h-11 items-center justify-center rounded-full border bg-zinc-800 px-6 text-sm font-medium text-white transition-colors hover:bg-zinc-700">Back to the top</a>
+                            </div>
+            HTML; ?>
+            <div class="lg:col-span-6">
+              <div id="contactCard" class="bg-surface border-line rounded-[24px] border p-6 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)] sm:p-8">
+                <?php if ($sent) { ?>
+                  <div class="py-8 text-center">
+                    <div class="bg-accent mx-auto flex h-12 w-12 items-center justify-center rounded-full text-zinc-900"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
                         <path d="M5 12l5 5l10 -10" />
-                      </svg></span> A list of subreddits where your buyers actually post</li>
-                  <li class="flex gap-3 text-sm leading-6 text-zinc-400"><span class="border-line mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-zinc-900 text-white"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                        <path d="M5 12l5 5l10 -10" />
-                      </svg></span> The angle we'd take in each one, and what would get us removed</li>
-                  <li class="flex gap-3 text-sm leading-6 text-zinc-400"><span class="border-line mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border bg-zinc-800 text-white"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                        <path d="M5 12l5 5l10 -10" />
-                      </svg></span> A straight answer on whether to bother at all</li>
-                </ul>
-                <div class="border-line mt-6 rounded-xl border bg-zinc-800 px-4 py-3">
-                  <div class="text-xs font-semibold text-white">You'll be talking to whoever would run the account</div>
-                  <div class="mt-0.5 text-xs text-zinc-400">Not a salesperson reading from a script.</div>
-                </div>
+                      </svg></div>
+                    <div class="mt-5 font-display text-2xl font-semibold text-white">Got it — thanks.</div>
+                    <p class="mx-auto mt-3 max-w-[360px] text-sm leading-6 text-zinc-400">We read every one of these ourselves. You'll hear back within one working day, from the person who'd actually run the account.</p>
+                    <a href="/" class="border-line mt-7 inline-flex h-11 items-center justify-center rounded-full border bg-zinc-800 px-6 text-sm font-medium text-white transition-colors hover:bg-zinc-700">Back to the top</a>
+                  </div>
+                <?php } else { ?>
+                  <h3 class="font-display text-2xl font-semibold tracking-[-0.01em]">Tell us what you sell</h3>
+                  <p class="mt-2 text-sm leading-6 text-zinc-400">Takes a minute. We'll come back with the threads worth being in — or tell you straight that there aren't any.</p>
+
+                  <div id="formAlert" aria-live="polite">
+                    <?php if ($alert) { ?><p role="alert" class="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300"><?php echo htmlspecialchars($alert); ?></p><?php } ?>
+                  </div>
+
+                  <form id="contactForm" method="post" action="#contact" class="mt-6" novalidate>
+                    <div class="grid gap-4 sm:grid-cols-2">
+                      <div>
+                        <label for="f-name" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Name</label>
+                        <input id="f-name" name="name" type="text" autocomplete="name" required value="<?php echo htmlspecialchars($form["name"]); ?>" <?php echo isset($errors["name"]) ? 'aria-invalid="true" aria-describedby="f-name-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["name"]) ? "border-red-500/60" : ""; ?>" placeholder="Sam Patel">
+                        <?php if (isset($errors["name"])) { ?><p id="f-name-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["name"]); ?></p><?php } ?>
+                      </div>
+
+                      <div>
+                        <label for="f-email" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Work email</label>
+                        <input id="f-email" name="email" type="email" autocomplete="email" required value="<?php echo htmlspecialchars($form["email"]); ?>" <?php echo isset($errors["email"]) ? 'aria-invalid="true" aria-describedby="f-email-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["email"]) ? "border-red-500/60" : ""; ?>" placeholder="sam@company.com">
+                        <?php if (isset($errors["email"])) { ?><p id="f-email-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["email"]); ?></p><?php } ?>
+                      </div>
+
+                      <div>
+                        <label for="f-company" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Company <span class="font-normal text-zinc-500 normal-case">(optional)</span></label>
+                        <input id="f-company" name="company" type="text" autocomplete="organization" value="<?php echo htmlspecialchars($form["company"]); ?>" class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none" placeholder="Acme">
+                      </div>
+
+                      <div>
+                        <label for="f-budget" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Monthly budget <span class="font-normal text-zinc-500 normal-case">(optional)</span></label>
+                        <select id="f-budget" name="budget" class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full appearance-none rounded-xl border bg-zinc-900 bg-[length:12px] bg-[position:right_1rem_center] bg-no-repeat py-0 pr-10 pl-4 text-sm text-white transition-colors focus:ring-2 focus:outline-none" style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 12 8%22 fill=%22none%22 stroke=%22%23a1a1aa%22 stroke-width=%221.6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M1 1.5L6 6.5L11 1.5%22/%3E%3C/svg%3E')">
+                          <option value="">Pick one</option>
+                          <?php foreach ($budgets as $b) { ?>
+                            <option value="<?php echo htmlspecialchars($b); ?>" <?php echo $form["budget"] === $b ? "selected" : ""; ?>><?php echo htmlspecialchars($b); ?></option>
+                          <?php } ?>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="mt-4">
+                      <label for="f-message" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">What do you sell, and to whom?</label>
+                      <textarea id="f-message" name="message" rows="4" required <?php echo isset($errors["message"]) ? 'aria-invalid="true" aria-describedby="f-message-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 w-full resize-none rounded-xl border bg-zinc-900 px-4 py-3 text-sm leading-6 text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["message"]) ? "border-red-500/60" : ""; ?>" placeholder="B2B scheduling software for dental practices. UK, 5–50 staff. Competitor is Dentally."><?php echo htmlspecialchars($form["message"]); ?></textarea>
+                      <?php if (isset($errors["message"])) { ?><p id="f-message-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["message"]); ?></p><?php } ?>
+                    </div>
+
+                    <!-- honeypot: off-screen for people, irresistible to bots -->
+                    <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+                      <label for="f-website">Website</label>
+                      <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                    </div>
+
+                    <button type="submit" class="bg-accent hover:bg-accent-hover focus-visible:ring-accent focus-visible:ring-offset-bg mt-6 inline-flex h-[56px] w-full items-center justify-center rounded-full px-7 text-base font-semibold text-zinc-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
+                      Get my subreddit shortlist
+                      <svg class="ml-2" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </button>
+                  </form>
+                  <template id="sentCard"><?php echo $sentCard; ?></template>
+                <?php } ?>
               </div>
             </div>
           </div>
         </div>
+      </div>
       </div>
     </section>
   </main>
@@ -707,6 +890,78 @@ $cssVer = is_file($css) ? substr(md5_file($css), 0, 10) : $year;
         }
       });
     });
+    // Contact form over fetch. The plain POST still works with JS off — this
+    // only intercepts the submit and renders the same states without a reload.
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+      const card = document.getElementById('contactCard');
+      const alertBox = document.getElementById('formAlert');
+      const submitBtn = contactForm.querySelector('button[type="submit"]');
+      const submitLabel = submitBtn.innerHTML;
+      const clearErrors = () => {
+        alertBox.innerHTML = '';
+        contactForm.querySelectorAll('.field-error').forEach(el => el.remove());
+        contactForm.querySelectorAll('[aria-invalid]').forEach(el => {
+          el.removeAttribute('aria-invalid');
+          el.removeAttribute('aria-describedby');
+          el.classList.remove('border-red-500/60');
+        });
+      };
+      const showErrors = errors => {
+        const fields = Object.keys(errors).filter(k => k !== 'form');
+        const count = fields.length;
+        alertBox.innerHTML =
+          '<p role="alert" class="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300"></p>';
+        alertBox.firstChild.textContent = errors.form ||
+          `Nearly — ${count} field${count > 1 ? 's need' : ' needs'} a look below.`;
+        fields.forEach(name => {
+          const input = document.getElementById('f-' + name);
+          if (!input) return;
+          input.setAttribute('aria-invalid', 'true');
+          input.setAttribute('aria-describedby', 'f-' + name + '-err');
+          input.classList.add('border-red-500/60');
+          const msg = document.createElement('p');
+          msg.id = 'f-' + name + '-err';
+          msg.className = 'field-error mt-1.5 text-xs text-red-300';
+          msg.textContent = errors[name];
+          input.insertAdjacentElement('afterend', msg);
+        });
+        (document.getElementById('f-' + fields[0]) || alertBox).focus?.();
+      };
+      contactForm.addEventListener('submit', async e => {
+        e.preventDefault();
+        clearErrors();
+        submitBtn.disabled = true;
+        submitBtn.classList.add('cursor-wait', 'opacity-70');
+        submitBtn.textContent = 'Sending…';
+        try {
+          const res = await fetch(location.pathname, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: {
+              'X-Requested-With': 'fetch'
+            }
+          });
+          const data = await res.json();
+          if (data.ok) {
+            card.innerHTML = document.getElementById('sentCard').innerHTML;
+            card.scrollIntoView({
+              block: 'center',
+              behavior: reduceMotion ? 'auto' : 'smooth'
+            });
+            return; // card is gone, nothing left to re-enable
+          }
+          showErrors(data.errors || {});
+        } catch {
+          showErrors({
+            form: "The message didn't send. Check your connection, or email us instead."
+          });
+        }
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('cursor-wait', 'opacity-70');
+        submitBtn.innerHTML = submitLabel;
+      });
+    }
     // Anchor scroll, offset for the sticky header
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.querySelectorAll('a[href^="#"]').forEach(a => {

@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@14,800&family=Instrument+Sans:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #070709;
+        color: #fff;
+        font-family: Inter, system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        overflow: hidden;
+        position: relative;
+      }
+      .glow {
+        position: absolute;
+        width: 900px;
+        height: 900px;
+        right: -320px;
+        top: -420px;
+        background: radial-gradient(ellipse at center, rgba(185, 255, 102, 0.16), transparent 62%);
+      }
+      .glow2 {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        left: -300px;
+        bottom: -380px;
+        background: radial-gradient(ellipse at center, rgba(185, 255, 102, 0.07), transparent 62%);
+      }
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(#ffffff0a 1px, transparent 1px), linear-gradient(90deg, #ffffff0a 1px, transparent 1px);
+        background-size: 64px 64px;
+        mask-image: linear-gradient(160deg, #000, transparent 70%);
+      }
+      .wrap {
+        position: relative;
+        height: 100%;
+        padding: 64px 72px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .logo {
+        display: flex;
+        align-items: baseline;
+        font-family: "Bricolage Grotesque", Inter, sans-serif;
+        font-weight: 800;
+        font-size: 34px;
+        letter-spacing: -0.04em;
+        line-height: 1;
+      }
+      .logo .lime {
+        color: #b9ff66;
+      }
+      .logo .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 99px;
+        background: #b9ff66;
+        margin-left: 6px;
+      }
+      h1 {
+        font-family: "Instrument Sans", Inter, sans-serif;
+        font-weight: 600;
+        font-size: 76px;
+        line-height: 1.06;
+        letter-spacing: -0.035em;
+        max-width: 940px;
+      }
+      h1 em {
+        font-style: normal;
+        color: #b9ff66;
+      }
+      .sub {
+        margin-top: 26px;
+        font-size: 24px;
+        line-height: 1.5;
+        color: #a1a1aa;
+        max-width: 760px;
+      }
+      .foot {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .pills {
+        display: flex;
+        gap: 10px;
+      }
+      .pill {
+        border: 1px solid #232326;
+        background: #111113;
+        border-radius: 99px;
+        padding: 11px 20px;
+        font-size: 18px;
+        font-weight: 500;
+        color: #d4d4d8;
+      }
+      .url {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #fff;
+      }
+      .url span.d {
+        width: 9px;
+        height: 9px;
+        border-radius: 99px;
+        background: #b9ff66;
+      }
+      .rule {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 8px;
+        background: #b9ff66;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow"></div>
+    <div class="glow2"></div>
+    <div class="grid"></div>
+    <div class="wrap">
+      <div class="logo">Groww<span class="lime">Daddy</span><span class="dot"></span></div>
+      <div>
+        <h1>We get you into the Reddit threads where buyers <em>already ask</em> what to buy.</h1>
+        <p class="sub">
+          Subreddit research, real accounts, and comments that don't get removed. One channel, done properly.
+        </p>
+      </div>
+      <div class="foot">
+        <div class="url"><span class="d"></span>growwdaddy.com</div>
+        <div class="pills">
+          <div class="pill">Subreddit research</div>
+          <div class="pill">Account management</div>
+          <div class="pill">Reputation</div>
+        </div>
+      </div>
+    </div>
+    <div class="rule"></div>
+  </body>
+</html>

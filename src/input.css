@@ -13,6 +13,9 @@
   --color-accent-hover: #a8e635;
   --font-sans: Inter, system-ui, -apple-system, sans-serif;
   --font-display: "Instrument Sans", Inter, sans-serif;
+  /* Wordmark only — one weight, one optical size, so it costs ~15KB. Swap this
+     token to change the logo everywhere; nothing else uses it. */
+  --font-logo: "Bricolage Grotesque", "Instrument Sans", sans-serif;
   --shadow-soft: 0 1px 0 0 rgb(255 255 255 / 4%), 0 8px 24px rgb(0 0 0 / 50%);
 }
 

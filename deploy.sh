@@ -25,6 +25,9 @@ done
 # index.php goes in a second pass, after everything else. The page derives its
 # ?v= hash from output.css on the server, so the stylesheet must already be
 # there or a visitor mid-deploy gets markup pointing at a file that is missing.
+# vendor/ and smtp.php are gitignored (library code, and SMTP credentials) but
+# the site needs both to send mail, so rsync pushes them from the working copy.
+# ponytail: no CI, no composer on the server — the local vendor/ IS the artifact.
 ASSETS=(
   assets/output.css
   assets/favicon.svg
@@ -32,6 +35,8 @@ ASSETS=(
   .htaccess
   robots.txt
   sitemap.xml
+  smtp.php
+  vendor
 )
 ENTRY=index.php
 
@@ -77,9 +82,19 @@ php -l "$ENTRY" >/dev/null || { echo "$ENTRY has a syntax error, refusing to dep
 
 missing=0
 for f in "${ASSETS[@]}" "$ENTRY"; do
-  [[ -f "$f" ]] || { echo "missing: $f" >&2; missing=1; }
+  [[ -e "$f" ]] || { echo "missing: $f" >&2; missing=1; }
 done
-[[ "$missing" == "0" ]] || exit 1
+if [[ "$missing" == "1" ]]; then
+  [[ -e vendor ]]   || echo "    vendor/ comes from: composer install --no-dev" >&2
+  [[ -e smtp.php ]] || echo "    smtp.php holds the SMTP credentials — see the Contact form section of the README" >&2
+  exit 1
+fi
+
+# An empty password means index.php silently falls back to mail(), which on
+# shared hosting usually lands in spam or nowhere at all.
+if ! grep -qE '"password"[[:space:]]*=>[[:space:]]*"[^"]+"' smtp.php; then
+  echo "!! smtp.php has no password, so the form will fall back to PHP mail()."
+fi
 
 # shellcheck disable=SC2016  # the literal $ctaUrl is the point
 if grep -qE '\$ctaUrl[[:space:]]*=[[:space:]]*"#' "$ENTRY"; then
