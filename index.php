@@ -152,7 +152,11 @@ $alert = $errors
   <meta name="twitter:image" content="<?php echo $siteUrl; ?>/assets/og-image.png">
   <meta name="twitter:image:alt" content="GrowwDaddy — Reddit marketing agency">
 
+  <!-- favicon.ico lives at the root as well, because browsers and crawlers ask for /favicon.ico regardless. -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="manifest" href="assets/site.webmanifest">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -249,14 +253,13 @@ $alert = $errors
       <div class="relative mx-auto max-w-[1440px] px-6 pt-20 pb-20 sm:pt-24 lg:px-8 lg:pt-32 lg:pb-28">
         <div class="mx-auto max-w-[860px] text-center">
           <h1 class="font-display text-[34px] font-semibold tracking-[-0.035em] sm:text-5xl lg:text-[64px]">
-            Reddit marketing that reads<br class="hidden sm:block">
-            like a
-            <span class="bg-accent inline-block -rotate-2 rounded-xl px-3 py-0.5 text-zinc-900">person</span>
-            wrote it.
+            Reddit marketing without<br class="hidden sm:block">
+            the Reddit
+            <span class="bg-accent inline-block -rotate-2 rounded-xl px-3 py-0.5 text-zinc-900">cringe</span>.
           </h1>
 
           <p class="mx-auto mt-6 max-w-[620px] text-base leading-7 text-zinc-400 sm:text-lg">
-            We get your brand into the subreddits where people are already asking what to buy, then answer them properly. Real accounts, real comments, no copy-paste pitches and no upvote rings.
+            We get your brand into the threads where people are already asking what to buy, and answer them the way a person would. No fake customers, no comment pasted into nine subreddits, no "Hey guys, check out our amazing product".
           </p>
 
           <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:justify-center">
@@ -271,14 +274,7 @@ $alert = $errors
             </a>
           </div>
 
-          <div class="mt-9 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-zinc-500">
-            <span class="inline-flex items-center gap-2">
-              <span class="bg-accent h-1.5 w-1.5 rounded-full"></span>
-              Subreddit research, account management, reputation and lead campaigns
-            </span>
-            <span class="bg-line hidden h-3 w-px sm:block"></span>
-            <span>If Reddit is wrong for you, we'll say so on the call</span>
-          </div>
+          <p class="mt-7 text-xs text-zinc-500">If Reddit isn't right for your brand, we'll tell you that before you've spent anything.</p>
         </div>
       </div>
     </section>
@@ -315,7 +311,7 @@ $alert = $errors
               </svg>
             </div>
             <h3 class="mt-5 text-base font-semibold">Every subreddit is its own room</h3>
-            <p class="mt-2 text-sm leading-6 text-zinc-400">r/SaaS will forgive a plug if the post is genuinely useful. r/smallbusiness will not. Same words, two completely different outcomes.</p>
+            <p class="mt-2 text-sm leading-6 text-zinc-400">One community will forgive a plug as long as the post is genuinely useful. The one next door will bury you for it. Same words, two completely different outcomes.</p>
             <p class="text-accent mt-4 text-xs font-medium">Read the room before you speak</p>
           </div>
 
@@ -366,7 +362,7 @@ $alert = $errors
               </svg>
             </div>
             <h3 class="mt-6 text-lg font-semibold tracking-tight">Account management</h3>
-            <p class="mt-2 text-sm leading-6 text-zinc-400">Profiles with a real comment history behind them, built up over months. Karma that came from being useful in threads, not from reposting other people's photos.</p>
+            <p class="mt-2 text-sm leading-6 text-zinc-400"><span class="font-medium text-white">Accounts that don't read like marketing accounts.</span> Profiles with a real comment history behind them, built up over months. Karma that came from being useful in threads, not from reposting other people's photos.</p>
             <p class="mt-5 text-xs font-medium text-zinc-500">Profiles, history, day-to-day activity</p>
           </div>
 
@@ -378,7 +374,7 @@ $alert = $errors
               </svg>
             </div>
             <h3 class="mt-6 text-lg font-semibold tracking-tight">Community research and engagement</h3>
-            <p class="mt-2 text-sm leading-6 text-zinc-400">We work out which subreddits your buyers actually sit in, read the rules properly, then get into the conversations that are already happening there.</p>
+            <p class="mt-2 text-sm leading-6 text-zinc-400"><span class="font-medium text-white">We find where your buyers complain about your category.</span> Then we work out which of those rooms you should be in, read the rules properly, read the rules properly, then get into the conversations that are already happening there.</p>
             <p class="mt-5 text-xs font-medium text-zinc-500">Research, targeting, replies</p>
           </div>
 
@@ -390,7 +386,7 @@ $alert = $errors
               </svg>
             </div>
             <h3 class="mt-6 text-lg font-semibold tracking-tight">Reputation and mentions</h3>
-            <p class="mt-2 text-sm leading-6 text-zinc-400">Every few weeks somebody asks whether your product is any good. We watch for it, make sure there's a fair answer in the thread, and deal with the old posts that keep coming up in search.</p>
+            <p class="mt-2 text-sm leading-6 text-zinc-400"><span class="font-medium text-white">Somebody is already talking about your brand.</span> Every few weeks it's a thread asking whether your product is any good. We watch for it, make sure there's a fair answer in the thread, and deal with the old posts that keep coming up in search.</p>
             <p class="mt-5 text-xs font-medium text-zinc-500">Monitoring, responses, search cleanup</p>
           </div>
 
@@ -402,7 +398,7 @@ $alert = $errors
               </svg>
             </div>
             <h3 class="mt-6 text-lg font-semibold tracking-tight">Lead campaigns</h3>
-            <p class="mt-2 text-sm leading-6 text-zinc-800">Posts and comments that send people to your site, then carry on sending them, because a good Reddit answer still ranks a year after it was written.</p>
+            <p class="mt-2 text-sm leading-6 text-zinc-800"><span class="font-semibold text-zinc-900">Useful comments, suspiciously good distribution.</span> Posts and replies that send people to your site, then carry on sending them, because a good Reddit answer still ranks a year after it was written.</p>
             <p class="mt-5 text-xs font-semibold text-zinc-800">Traffic, enquiries, customers</p>
           </div>
         </div>
@@ -449,7 +445,7 @@ $alert = $errors
               </div>
               <h3 class="mt-5 text-base font-semibold">Show up daily</h3>
               <p class="mt-2 text-sm leading-6 text-zinc-400">We answer questions, share what we know, and name you when you're honestly the right answer. In practice that's about one comment in ten.</p>
-              <p class="mt-4 text-xs font-medium text-zinc-500">Nine helpful, one about you</p>
+              <p class="mt-4 text-xs font-medium text-zinc-500">The 90/10 rule</p>
             </div>
 
             <div class="reveal bg-accent relative rounded-[20px] p-6 text-zinc-900 lg:p-7" style="transition-delay:240ms">
@@ -473,7 +469,10 @@ $alert = $errors
           <div class="reveal lg:col-span-5">
             <p class="text-xs font-semibold tracking-[0.14em] text-zinc-400 uppercase">Why Reddit</p>
             <h2 class="mt-3 font-display text-4xl font-semibold tracking-[-0.02em]">Why we only work on this one channel</h2>
-            <p class="mt-4 text-sm leading-7 text-zinc-400">
+            <p class="mt-4 text-sm leading-7 text-zinc-300">
+              Because people would rather trust a stranger with 400 karma than your beautifully made ad. Annoying, but useful.
+            </p>
+            <p class="mt-3 text-sm leading-7 text-zinc-400">
               Reddit is where people go once they've stopped believing the ads. They look for the comparison, the alternative, the "is it worth it" thread, and they read those comments far more carefully than they'll ever read your homepage.
             </p>
             <p class="mt-3 text-sm leading-7 text-zinc-400">
@@ -545,7 +544,7 @@ $alert = $errors
             <div class="p-8 lg:col-span-7 lg:p-10 xl:p-12">
               <p class="text-accent text-xs font-semibold tracking-[0.14em] uppercase">Why us</p>
               <h2 class="mt-3 font-display text-4xl font-semibold tracking-[-0.02em]">We've been on Reddit long<br>enough to know what gets deleted.</h2>
-              <p class="mt-4 text-sm leading-7 text-zinc-400">We've had posts pulled, comments buried at the bottom of threads, and one account shadowbanned in our first month. Most of what we know came out of those, not out of a course.</p>
+              <p class="mt-4 text-sm leading-7 text-zinc-400">We've spent years inside these communities, so we know how each one behaves: what the mods remove, what gets buried, and what a subreddit will actually reward. None of it came out of a course.</p>
 
               <div class="mt-8 space-y-4">
                 <div class="flex gap-4">
@@ -598,21 +597,33 @@ $alert = $errors
 
             <div class="bg-surface border-line flex flex-col border-t p-8 lg:col-span-5 lg:border-t-0 lg:border-l lg:p-10 xl:p-12">
               <div class="bg-accent rounded-[20px] p-7 text-zinc-900">
-                <div class="text-xs font-bold tracking-widest uppercase">The rule we work to</div>
-                <p class="mt-3 font-display text-lg font-semibold tracking-tight">
-                  Nobody needs to see your brand everywhere. They need to see it once, in the thread they were already reading.
-                </p>
-                <p class="mt-4 text-sm leading-6 text-zinc-800">It's on the first page of every brief we write.</p>
+                <div class="text-xs font-bold tracking-widest uppercase">The 90/10 rule</div>
+                <p class="mt-3 font-display text-2xl font-semibold tracking-tight">90% useful. 10% about you.</p>
+                <p class="mt-3 text-sm leading-6 text-zinc-800">Make every comment about your product and Reddit doesn't see a helpful expert. It sees a marketer. Nobody needs to meet your brand everywhere — once, in the thread they were already reading, is enough.</p>
+                <p class="mt-4 text-xs font-semibold text-zinc-800">It's on the first page of every brief we write.</p>
               </div>
 
-              <div class="border-line mt-6 rounded-2xl border bg-zinc-800 p-5">
-                <div class="text-sm font-semibold">What you won't get from us</div>
-                <ul class="mt-3 space-y-2 text-sm leading-6 text-zinc-400">
-                  <li class="flex gap-2"><span class="text-zinc-600">&mdash;</span> Mass DMs or upvote rings</li>
-                  <li class="flex gap-2"><span class="text-zinc-600">&mdash;</span> The same comment pasted into nine subreddits</li>
-                  <li class="flex gap-2"><span class="text-zinc-600">&mdash;</span> Invented reviews or somebody else's case study</li>
-                  <li class="flex gap-2"><span class="text-zinc-600">&mdash;</span> Anything likely to get your domain banned sitewide</li>
-                </ul>
+              <div class="border-line mt-6 grid gap-4 rounded-2xl border bg-zinc-800 p-5 sm:grid-cols-2">
+                <div>
+                  <div class="text-sm font-semibold">Things we will not do</div>
+                  <ul class="mt-3 space-y-2 text-sm leading-6 text-zinc-400">
+                    <li class="flex gap-2"><span class="mt-0.5 shrink-0 text-red-400/80" aria-hidden="true">&#10007;</span> Fake customers or sock puppet accounts</li>
+                    <li class="flex gap-2"><span class="mt-0.5 shrink-0 text-red-400/80" aria-hidden="true">&#10007;</span> Upvote rings and mass DMs</li>
+                    <li class="flex gap-2"><span class="mt-0.5 shrink-0 text-red-400/80" aria-hidden="true">&#10007;</span> One comment pasted into nine subreddits</li>
+                    <li class="flex gap-2"><span class="mt-0.5 shrink-0 text-red-400/80" aria-hidden="true">&#10007;</span> "Great question! At GrowwDaddy we believe&hellip;"</li>
+                    <li class="flex gap-2"><span class="mt-0.5 shrink-0 text-red-400/80" aria-hidden="true">&#10007;</span> Promise you 347 leads in 30 days</li>
+                  </ul>
+                </div>
+                <div>
+                  <div class="text-sm font-semibold">Things we will</div>
+                  <ul class="mt-3 space-y-2 text-sm leading-6 text-zinc-400">
+                    <li class="flex gap-2"><span class="text-accent mt-0.5 shrink-0" aria-hidden="true">&#10003;</span> Read the rules before we post</li>
+                    <li class="flex gap-2"><span class="text-accent mt-0.5 shrink-0" aria-hidden="true">&#10003;</span> Learn the culture of every subreddit</li>
+                    <li class="flex gap-2"><span class="text-accent mt-0.5 shrink-0" aria-hidden="true">&#10003;</span> Write like an actual human being</li>
+                    <li class="flex gap-2"><span class="text-accent mt-0.5 shrink-0" aria-hidden="true">&#10003;</span> Say so when Reddit isn't worth your money</li>
+                    <li class="flex gap-2"><span class="text-accent mt-0.5 shrink-0" aria-hidden="true">&#10003;</span> Show you exactly what we posted, weekly</li>
+                  </ul>
+                </div>
               </div>
 
               <div class="mt-auto flex items-center gap-3 pt-6 text-xs text-zinc-500">
@@ -736,8 +747,9 @@ $alert = $errors
 
           <div class="relative grid gap-10 p-8 lg:grid-cols-12 lg:gap-12 lg:p-12 xl:p-14">
             <div class="lg:col-span-6">
-              <h2 class="font-display text-4xl font-semibold tracking-[-0.02em]">Find out whether Reddit<br>is worth your time.</h2>
-              <p class="mt-4 max-w-[520px] text-base leading-7 text-zinc-400">Half an hour, no slide deck. We'll go through your niche, name the subreddits worth being in, and tell you if there aren't any.</p>
+              <div class="bg-accent inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-bold tracking-widest text-zinc-900 uppercase">Thirty minutes, no charge</div>
+              <h2 class="mt-4 font-display text-4xl font-semibold tracking-[-0.02em]">Before you spend on Reddit,<br>find out if your buyers are there.</h2>
+              <p class="mt-4 max-w-[520px] text-base leading-7 text-zinc-400">Half an hour. No slide deck, no synergy, no growth framework with 47 arrows on it. We go through your niche, your competitors and the conversations already happening around your category. If it's a fit, we'll tell you how we'd attack it. If it isn't, we'll tell you that instead.</p>
 
               <div class="mt-8 text-sm font-semibold">What you leave the call with</div>
               <ul class="mt-4 space-y-3">
@@ -769,72 +781,68 @@ $alert = $errors
             <div class="lg:col-span-6">
               <div id="contactCard" class="bg-surface border-line rounded-[24px] border p-6 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)] sm:p-8">
                 <?php if ($sent) { ?>
-                  <div class="py-8 text-center">
-                    <div class="bg-accent mx-auto flex h-12 w-12 items-center justify-center rounded-full text-zinc-900"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
-                        <path d="M5 12l5 5l10 -10" />
-                      </svg></div>
-                    <div class="mt-5 font-display text-2xl font-semibold text-white">Got it — thanks.</div>
-                    <p class="mx-auto mt-3 max-w-[360px] text-sm leading-6 text-zinc-400">We read every one of these ourselves. You'll hear back within one working day, from the person who'd actually run the account.</p>
-                    <a href="/" class="border-line mt-7 inline-flex h-11 items-center justify-center rounded-full border bg-zinc-800 px-6 text-sm font-medium text-white transition-colors hover:bg-zinc-700">Back to the top</a>
-                  </div>
+                <?php echo $sentCard; ?>
                 <?php } else { ?>
-                  <h3 class="font-display text-2xl font-semibold tracking-[-0.01em]">Tell us what you sell</h3>
-                  <p class="mt-2 text-sm leading-6 text-zinc-400">Takes a minute. We'll come back with the threads worth being in — or tell you straight that there aren't any.</p>
+                <div class="text-accent flex items-center gap-2 text-xs font-semibold tracking-widest uppercase">
+                  <span class="bg-accent h-1.5 w-1.5 rounded-full"></span> Start here
+                </div>
+                <h3 class="mt-3 font-display text-2xl font-semibold tracking-[-0.01em]">Tell us what you sell</h3>
+                <p class="mt-2 text-sm leading-6 text-zinc-400">Takes a minute. We'll read it ourselves and come back with a straight answer on whether Reddit is worth your money.</p>
 
-                  <div id="formAlert" aria-live="polite">
-                    <?php if ($alert) { ?><p role="alert" class="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300"><?php echo htmlspecialchars($alert); ?></p><?php } ?>
+                <div id="formAlert" aria-live="polite">
+                  <?php if ($alert) { ?><p role="alert" class="mt-6 rounded-xl border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm leading-6 text-red-300"><?php echo htmlspecialchars($alert); ?></p><?php } ?>
+                </div>
+
+                <form id="contactForm" method="post" action="#contact" class="mt-6" novalidate>
+                  <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label for="f-name" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Name</label>
+                      <input id="f-name" name="name" type="text" autocomplete="name" required value="<?php echo htmlspecialchars($form["name"]); ?>" <?php echo isset($errors["name"]) ? 'aria-invalid="true" aria-describedby="f-name-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["name"]) ? "border-red-500/60" : ""; ?>" placeholder="Sam Patel">
+                      <?php if (isset($errors["name"])) { ?><p id="f-name-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["name"]); ?></p><?php } ?>
+                    </div>
+
+                    <div>
+                      <label for="f-email" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Work email</label>
+                      <input id="f-email" name="email" type="email" autocomplete="email" required value="<?php echo htmlspecialchars($form["email"]); ?>" <?php echo isset($errors["email"]) ? 'aria-invalid="true" aria-describedby="f-email-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["email"]) ? "border-red-500/60" : ""; ?>" placeholder="sam@company.com">
+                      <?php if (isset($errors["email"])) { ?><p id="f-email-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["email"]); ?></p><?php } ?>
+                    </div>
+
+                    <div>
+                      <label for="f-company" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Company <span class="font-normal text-zinc-500 normal-case">(optional)</span></label>
+                      <input id="f-company" name="company" type="text" autocomplete="organization" value="<?php echo htmlspecialchars($form["company"]); ?>" class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none" placeholder="Acme">
+                    </div>
+
+                    <div>
+                      <label for="f-budget" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Monthly budget <span class="font-normal text-zinc-500 normal-case">(optional)</span></label>
+                      <select id="f-budget" name="budget" class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full appearance-none rounded-xl border bg-zinc-900 bg-[length:12px] bg-[position:right_1rem_center] bg-no-repeat py-0 pr-10 pl-4 text-sm text-white transition-colors focus:ring-2 focus:outline-none" style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 12 8%22 fill=%22none%22 stroke=%22%23a1a1aa%22 stroke-width=%221.6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M1 1.5L6 6.5L11 1.5%22/%3E%3C/svg%3E')">
+                        <option value="">Pick one</option>
+                        <?php foreach ($budgets as $b) { ?>
+                        <option value="<?php echo htmlspecialchars($b); ?>" <?php echo $form["budget"] === $b ? "selected" : ""; ?>><?php echo htmlspecialchars($b); ?></option>
+                        <?php } ?>
+                      </select>
+                    </div>
                   </div>
 
-                  <form id="contactForm" method="post" action="#contact" class="mt-6" novalidate>
-                    <div class="grid gap-4 sm:grid-cols-2">
-                      <div>
-                        <label for="f-name" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Name</label>
-                        <input id="f-name" name="name" type="text" autocomplete="name" required value="<?php echo htmlspecialchars($form["name"]); ?>" <?php echo isset($errors["name"]) ? 'aria-invalid="true" aria-describedby="f-name-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["name"]) ? "border-red-500/60" : ""; ?>" placeholder="Sam Patel">
-                        <?php if (isset($errors["name"])) { ?><p id="f-name-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["name"]); ?></p><?php } ?>
-                      </div>
+                  <div class="mt-4">
+                    <label for="f-message" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">What do you sell, and to whom?</label>
+                    <textarea id="f-message" name="message" rows="4" required <?php echo isset($errors["message"]) ? 'aria-invalid="true" aria-describedby="f-message-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 w-full resize-none rounded-xl border bg-zinc-900 px-4 py-3 text-sm leading-6 text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["message"]) ? "border-red-500/60" : ""; ?>" placeholder="B2B scheduling software for dental practices. UK, 5–50 staff. Competitor is Dentally."><?php echo htmlspecialchars($form["message"]); ?></textarea>
+                    <?php if (isset($errors["message"])) { ?><p id="f-message-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["message"]); ?></p><?php } ?>
+                  </div>
 
-                      <div>
-                        <label for="f-email" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Work email</label>
-                        <input id="f-email" name="email" type="email" autocomplete="email" required value="<?php echo htmlspecialchars($form["email"]); ?>" <?php echo isset($errors["email"]) ? 'aria-invalid="true" aria-describedby="f-email-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["email"]) ? "border-red-500/60" : ""; ?>" placeholder="sam@company.com">
-                        <?php if (isset($errors["email"])) { ?><p id="f-email-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["email"]); ?></p><?php } ?>
-                      </div>
+                  <!-- honeypot: off-screen for people, irresistible to bots -->
+                  <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
+                    <label for="f-website">Website</label>
+                    <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
+                  </div>
 
-                      <div>
-                        <label for="f-company" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Company <span class="font-normal text-zinc-500 normal-case">(optional)</span></label>
-                        <input id="f-company" name="company" type="text" autocomplete="organization" value="<?php echo htmlspecialchars($form["company"]); ?>" class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full rounded-xl border bg-zinc-900 px-4 text-sm text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none" placeholder="Acme">
-                      </div>
-
-                      <div>
-                        <label for="f-budget" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">Monthly budget <span class="font-normal text-zinc-500 normal-case">(optional)</span></label>
-                        <select id="f-budget" name="budget" class="border-line focus:border-accent focus:ring-accent/30 mt-2 h-11 w-full appearance-none rounded-xl border bg-zinc-900 bg-[length:12px] bg-[position:right_1rem_center] bg-no-repeat py-0 pr-10 pl-4 text-sm text-white transition-colors focus:ring-2 focus:outline-none" style="background-image:url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 12 8%22 fill=%22none%22 stroke=%22%23a1a1aa%22 stroke-width=%221.6%22 stroke-linecap=%22round%22 stroke-linejoin=%22round%22%3E%3Cpath d=%22M1 1.5L6 6.5L11 1.5%22/%3E%3C/svg%3E')">
-                          <option value="">Pick one</option>
-                          <?php foreach ($budgets as $b) { ?>
-                            <option value="<?php echo htmlspecialchars($b); ?>" <?php echo $form["budget"] === $b ? "selected" : ""; ?>><?php echo htmlspecialchars($b); ?></option>
-                          <?php } ?>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div class="mt-4">
-                      <label for="f-message" class="block text-xs font-semibold tracking-wide text-zinc-300 uppercase">What do you sell, and to whom?</label>
-                      <textarea id="f-message" name="message" rows="4" required <?php echo isset($errors["message"]) ? 'aria-invalid="true" aria-describedby="f-message-err"' : ""; ?> class="border-line focus:border-accent focus:ring-accent/30 mt-2 w-full resize-none rounded-xl border bg-zinc-900 px-4 py-3 text-sm leading-6 text-white placeholder-zinc-500 transition-colors focus:ring-2 focus:outline-none <?php echo isset($errors["message"]) ? "border-red-500/60" : ""; ?>" placeholder="B2B scheduling software for dental practices. UK, 5–50 staff. Competitor is Dentally."><?php echo htmlspecialchars($form["message"]); ?></textarea>
-                      <?php if (isset($errors["message"])) { ?><p id="f-message-err" class="mt-1.5 text-xs text-red-300"><?php echo htmlspecialchars($errors["message"]); ?></p><?php } ?>
-                    </div>
-
-                    <!-- honeypot: off-screen for people, irresistible to bots -->
-                    <div class="absolute -left-[9999px] h-0 w-0 overflow-hidden" aria-hidden="true">
-                      <label for="f-website">Website</label>
-                      <input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off">
-                    </div>
-
-                    <button type="submit" class="bg-accent hover:bg-accent-hover focus-visible:ring-accent focus-visible:ring-offset-bg mt-6 inline-flex h-[56px] w-full items-center justify-center rounded-full px-7 text-base font-semibold text-zinc-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
-                      Get my subreddit shortlist
-                      <svg class="ml-2" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                        <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-                      </svg>
-                    </button>
-                  </form>
-                  <template id="sentCard"><?php echo $sentCard; ?></template>
+                  <button type="submit" class="bg-accent hover:bg-accent-hover focus-visible:ring-accent focus-visible:ring-offset-bg mt-6 inline-flex h-[56px] w-full items-center justify-center rounded-full px-7 text-base font-semibold text-zinc-900 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2">
+                    Get a straight answer
+                    <svg class="ml-2" width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                      <path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                </form>
+                <template id="sentCard"><?php echo $sentCard; ?></template>
                 <?php } ?>
               </div>
             </div>

@@ -30,8 +30,19 @@ done
 # ponytail: no CI, no composer on the server — the local vendor/ IS the artifact.
 ASSETS=(
   assets/output.css
-  assets/favicon.svg
   assets/og-image.png
+  assets/favicon.svg
+  assets/favicon.ico
+  assets/favicon-16x16.png
+  assets/favicon-32x32.png
+  assets/favicon-48x48.png
+  assets/favicon-96x96.png
+  assets/apple-touch-icon.png
+  assets/android-chrome-192x192.png
+  assets/android-chrome-512x512.png
+  assets/maskable-512x512.png
+  assets/site.webmanifest
+  favicon.ico
   .htaccess
   robots.txt
   sitemap.xml

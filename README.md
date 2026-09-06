@@ -106,6 +106,17 @@ npm run build   # minified, commit the result
 
 Colour tokens: `bg`, `surface`, `surface2`, `line`, `accent`, `accent-hover`.
 
+## Favicons
+
+The mark is the navbar wordmark cut down to `G.` — the Bricolage Grotesque glyph
+converted to SVG paths, so nothing depends on the webfont loading. The lime square
+is full-bleed on the apple-touch and android icons because iOS and Android apply
+their own corner masking; only the browser-tab versions carry the 8px radius.
+
+Everything was generated from `assets/favicon.svg`, so to change the mark: edit the
+SVG, render it large in a browser, and downsample. Rare enough that there is no
+script for it — the twelve files are the artifact.
+
 ## Link preview image
 
 `src/og-image.html` is the source for `assets/og-image.png` (1200×630) — plain HTML
@@ -130,6 +141,7 @@ old card is still showing, run it through their card debuggers to force a refetc
 - `$email` — `hello@growwdaddy.com` needs to exist and be monitored
 - `$siteUrl` — used for the canonical and OG tags, change if the domain isn't `growwdaddy.com`
 - The footer says there's no analytics on the page. If you add any, change that line.
+- `assets/site.webmanifest` has the app name and colours, worth a look if the domain changes
 
 ## Files
 
@@ -139,7 +151,10 @@ smtp.php            SMTP credentials, gitignored, deployed by rsync
 vendor/             PHPMailer, gitignored, deployed by rsync
 src/input.css       Tailwind entry + theme
 assets/output.css   compiled, committed
-assets/favicon.svg
+assets/favicon.svg   the mark: Bricolage "G" + full stop, as outlines
+assets/favicon.ico   16/32/48, also copied to /favicon.ico
+assets/*.png         16/32/48/96, apple-touch 180, android 192/512, maskable 512
+assets/site.webmanifest
 assets/og-image.png
 .htaccess           gzip, cache headers, https + www redirect (Apache only)
 robots.txt
