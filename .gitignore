@@ -3,3 +3,5 @@ deploy.env
 node_modules/
 smtp.php
 vendor/
+outreach/.cache/
+outreach/send.smtp.php

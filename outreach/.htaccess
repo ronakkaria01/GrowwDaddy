@@ -1,0 +1,35 @@
+# Everything in this folder is private. index.php gates itself with a password;
+# the raw files next to it (the JSON with every address, send.smtp.php with the
+# mailbox credentials, the .py scripts) must never be served at all.
+#
+# 404 rather than 403, so the response says "no such file" instead of "that file
+# exists and you cannot have it". It has to be mod_rewrite that does it: a
+# Require all denied runs in the auth phase, before rewrite, and always 403s.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # /outreach/index.php was asked for by name. Send it to the clean URL.
+  # THE_REQUEST is the client's literal request line, so the internal rewrite
+  # below cannot re-trigger this and loop.
+  RewriteCond %{THE_REQUEST} \s/+outreach/index\.php[\s?] [NC]
+  RewriteRule ^index\.php$ /outreach/ [R=301,L]
+
+  # /outreach/ serves the page, without the filename ever showing.
+  RewriteRule ^$ index.php [L]
+
+  # Anything else in here does not exist as far as the web is concerned.
+  RewriteCond %{REQUEST_FILENAME} !/index\.php$
+  RewriteRule ^ - [R=404,L]
+</IfModule>
+
+# Only if this host has no mod_rewrite. Serves nothing, at the cost of a 403.
+<IfModule !mod_rewrite.c>
+  <IfModule mod_authz_core.c>
+    Require all denied
+    <Files "index.php">
+      Require all granted
+    </Files>
+  </IfModule>
+</IfModule>
+
+Options -Indexes

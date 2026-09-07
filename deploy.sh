@@ -28,6 +28,8 @@ done
 # vendor/ and smtp.php are gitignored (library code, and SMTP credentials) but
 # the site needs both to send mail, so rsync pushes them from the working copy.
 # ponytail: no CI, no composer on the server — the local vendor/ IS the artifact.
+# outreach/ is an allowlist, not the folder: only the password-gated page, its
+# .htaccess and the data it reads. send.py and send.smtp.php stay local.
 ASSETS=(
   assets/output.css
   assets/og-image.png
@@ -48,6 +50,9 @@ ASSETS=(
   sitemap.xml
   smtp.php
   vendor
+  outreach/.htaccess
+  outreach/index.php
+  outreach/edtech-prospects.json
 )
 ENTRY=index.php
 
