@@ -68,7 +68,7 @@ if "--selftest" in sys.argv:
     sys.exit()
 
 data = json.loads(DATA.read_text())
-pending = [c for c in data["companies"] if not c.get("sent")]
+pending = [c for c in data["companies"] if not c.get("sent") and c.get("email")]
 if not pending:
     sys.exit("nothing pending")
 if test_to:

@@ -94,7 +94,7 @@ $sent = count(array_filter($c, fn($x) => $x['sent']));
     <td><button class="name" onclick="m<?= $i ?>.showModal()"><?= htmlspecialchars($x['name']) ?></button></td>
     <td class="muted"><?= htmlspecialchars($x['email']) ?></td>
     <td class="muted"><?= htmlspecialchars($x['angle']) ?></td>
-    <td class="muted"><?= htmlspecialchars($x['ticket_band']) ?></td>
+    <td class="muted"><?= htmlspecialchars($x['ticket_band'] ?? $x['services'] ?? '') ?></td>
     <td><span class="pill <?= $x['sent'] ? 'yes' : 'no' ?>"><?= $x['sent'] ? 'sent' : 'pending' ?></span></td>
   </tr>
   <?php endforeach; ?>
