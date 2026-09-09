@@ -1,0 +1,133 @@
+<!doctype html>
+<!--
+  GrowwDaddy plans one pager. Edit this file, then rebuild the PDF with:
+
+    cd outreach && "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+      --headless --disable-gpu --no-pdf-header-footer --virtual-time-budget=6000 \
+      --print-to-pdf="growwdaddy-reddit-network-plans.pdf" "file://$PWD/plans.html"
+
+  Colours and fonts are copied from src/input.css so it matches the site.
+  It is tuned to fit one A4 page. Adding a paragraph will push it to two, so
+  drop the body font-size a notch if that happens.
+-->
+<meta charset="utf-8">
+<title>GrowwDaddy Reddit Network Plans</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@14,800&family=Instrument+Sans:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #070709;
+    --surface: #111113;
+    --surface2: #19191b;
+    --line: #232326;
+    --accent: #b9ff66;
+    --muted: #8b8b93;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  body {
+    margin: 0; background: var(--bg); color: #e9e9ec;
+    font: 9pt/1.5 Inter, system-ui, -apple-system, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .page { padding: 13mm 15mm; }
+
+  header {
+    display: flex; align-items: baseline; gap: 8px;
+    border-bottom: 1px solid var(--line); padding-bottom: 9px; margin-bottom: 15px;
+  }
+  .logo {
+    font-family: "Bricolage Grotesque", "Instrument Sans", sans-serif;
+    font-size: 21px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; color: #fff;
+  }
+  .logo b { color: var(--accent); font-weight: 800; }
+  .dot { width: 5px; height: 5px; border-radius: 999px; background: var(--accent); align-self: center; }
+
+  .plan {
+    background: var(--surface); border: 1px solid var(--line);
+    border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; break-inside: avoid;
+  }
+  .plan-head {
+    display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+    border-bottom: 1px solid var(--line); padding-bottom: 8px; margin-bottom: 10px;
+  }
+  .plan-n {
+    display: block; font-size: 7.5pt; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 4px;
+  }
+  .plan-name {
+    font-family: "Instrument Sans", Inter, sans-serif;
+    font-size: 13pt; font-weight: 700; letter-spacing: -0.02em; color: #fff; line-height: 1.25;
+  }
+  .price {
+    font-family: "Instrument Sans", Inter, sans-serif;
+    font-size: 13pt; font-weight: 700; color: var(--accent); white-space: nowrap; letter-spacing: -0.02em;
+  }
+  .price small { display: block; font-size: 7.5pt; font-weight: 500; color: var(--muted); text-align: right; margin-top: 3px; letter-spacing: 0; }
+  .plan p { margin: 0 0 6px; }
+  .plan p:last-of-type { margin-bottom: 0; }
+  .terms {
+    margin-top: 9px; padding: 7px 10px; background: var(--surface2);
+    border-left: 2px solid var(--accent); border-radius: 0 6px 6px 0; color: #fff;
+  }
+
+  section { break-inside: avoid; margin-top: 12px; }
+  h2 {
+    font-size: 7.5pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 8px; padding-top: 11px; border-top: 1px solid var(--line);
+  }
+  section p { margin: 0 0 6px; }
+  section p:last-child { margin-bottom: 0; }
+  .lead-in { color: #fff; font-weight: 600; }
+</style>
+
+<div class="page">
+<header>
+  <span class="logo">Groww<b>Daddy</b></span>
+  <span class="dot"></span>
+</header>
+
+<div class="plan">
+  <div class="plan-head">
+    <div>
+      <span class="plan-n">Plan 1</span>
+      <span class="plan-name">You build and own the network</span>
+    </div>
+    <div class="price">100 USD<small>per recruitment post</small></div>
+  </div>
+  <p>We run a recruitment campaign for you in the communities where people who take on this kind of work already spend their time, so the responses come from people who are genuinely interested rather than from anyone who saw an advert.</p>
+  <p>We write and refine the post with you before it goes out. The wording is what decides how many people reply and what sort of people they are, so it is worth getting right.</p>
+  <p>Every person who responds comes to you directly. The network is yours, the contact details are yours, and there is nothing to renew.</p>
+  <p>You screen the responses, agree terms with the people you want, and pay them directly at whatever rate you decide. You run the group day to day. Most agencies use Discord or Telegram for this, whichever they already have.</p>
+  <div class="terms">100 USD per recruitment post. One off, nothing recurring. Run another campaign whenever you want to grow the bench.</div>
+</div>
+
+<div class="plan">
+  <div class="plan-head">
+    <div>
+      <span class="plan-n">Plan 2</span>
+      <span class="plan-name">We build and manage the network for you</span>
+    </div>
+    <div class="price">500 USD<small>per month</small></div>
+  </div>
+  <p>We find the people, screen them, and keep a bench of them active and available to you.</p>
+  <p>We keep rotating who is used, so no single account carries too much of your work and none of them get flagged.</p>
+  <p>We replace people who go quiet or stop being useful, so the bench stays the size you are paying for rather than quietly shrinking.</p>
+  <p>We watch which communities your clients come up in and recruit towards those, rather than recruiting generally.</p>
+  <p>You brief the people and you pay them directly, at whatever rate you set. Our fee covers finding, managing and growing the network, not the posters themselves.</p>
+</div>
+
+<section>
+  <h2>Which one to start with</h2>
+  <p>Plan 1 if you are working with a lower budget. It is the cheaper way in, and everything that comes out of the campaign is yours to keep.</p>
+  <p>Plan 2 if you would rather not handle the recruitment yourself, and you want the people rotated over time so the same few accounts are not carrying all of your work.</p>
+</section>
+
+<section>
+  <h2>Not included in either plan</h2>
+  <p><span class="lead-in">What the posters are paid.</span> You agree that with them directly on both plans.</p>
+  <p><span class="lead-in">The posting itself.</span> On these two plans we build and maintain the network, you brief it. If you would rather we handled the placements end to end, that is a separate arrangement.</p>
+  <p><span class="lead-in">How long a placement lasts.</span> We do not guarantee how long any individual post or comment stays up. How long something survives depends mostly on the content and the subreddit, and on these plans the content is yours.</p>
+</section>
+</div>
